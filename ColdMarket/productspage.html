@@ -16,7 +16,7 @@
             --text-secondary-light: #565959;
             --border-light: #DDDDDD;
             --success-light: #067D62;
-            --danger-light: #B12704;
+            --danger-light: #bd2600;
             
             /* Dark Theme */
             --primary-dark: #00c0ce;
@@ -27,7 +27,7 @@
             --text-secondary-dark: #A0A0A0;
             --border-dark: #333333;
             --success-dark: #00C896;
-            --danger-dark: #FF6B6B;
+            --danger-dark: #ff3e3e;
             
             /* Current Theme (defaults to light) */
             --primary: var(--primary-light);
@@ -105,7 +105,7 @@
 
         .search-select {
             background-color: var(--background);
-            border: 1px solid var(--border);
+            border: 1px solid rgb(0, 238, 255);
             border-radius: 4px 0 0 4px;
             padding: 0 10px;
             border-right: none;
@@ -115,7 +115,7 @@
         .search-input {
             flex-grow: 1;
             padding: 10px;
-            border: 1px solid var(--border);
+            border: 1px solid rgb(0, 238, 255);
             font-size: 1rem;
             background-color: var(--background);
             color: var(--text-primary);
@@ -171,9 +171,9 @@
             background: none;
             border: none;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.7rem;
             cursor: pointer;
-            margin-left: 15px;
+            margin-left: 40px;
         }
 
        
@@ -393,7 +393,7 @@
 
         .btn-add-to-cart:hover {
             background-color: #008cff;
-            color: var(--text-secondary-dark);
+            color: rgb(219, 216, 216);
         }
 
         .btn-wishlist {
@@ -432,7 +432,14 @@
         .pagination-button:hover {
             background-color: var(--background);
         }
-
+        .DEVS a {
+            color: #c7c7c7;
+            text-decoration: none;
+        }
+        .DEVS a span:hover{
+            text-decoration: underline;
+            color: white;
+        }
         .pagination-button.active {
             background-color: var(--primary);
             color: var(--secondary);
@@ -564,9 +571,15 @@
             <select class="search-select">
                 <option>All Categories</option>
                 <option>Electronics</option>
-                <option>Clothing</option>
-                <option>Home & Kitchen</option>
-                <option>Books</option>
+                <option>phone</option><
+                <option>computers</option>
+                <option>tablets</option>
+                <option>camera</option>
+                <option>accessories</option>
+                <option>Fashion</option>
+                <option>Sport</option>
+                <option >Furniture</option>
+                <option>House</option>
             </select>
             <input type="text" class="search-input" placeholder="Search for products...">
             <button class="search-button">
@@ -613,13 +626,23 @@
                 <span class="filter-label">Price:</span>
                 <select class="filter-select">
                     <option>All Prices</option>
-                    <option>Under Rs. 25,000</option>
-                    <option>Rs. 25,000 to Rs. 50,000</option>
-                    <option>Rs. 50,000 to Rs. 100,000</option>
-                    <option>Over Rs. 100,000</option>
+                    <option>Under ETB. 25,000</option>
+                    <option>ETB. 25,000 to ETB. 50,000</option>
+                    <option>ETB. 50,000 to ETB. 100,000</option>
+                    <option>Over ETB. 100,000</option>
                 </select>
             </div>
             
+            <div class="filter-group">
+                <span class="filter-label">Brand:</span>
+                <select class="filter-select">
+                    <option>All Brand</option>
+                    <option>Apple</option>
+                    <option>Samsung</option>
+                    <option>LG</option>
+                    <option></option>
+                </select>
+            </div>
           
             
             <div class="filter-group">
@@ -706,11 +729,10 @@
             </div>
             <div class="footer-copyright">
                 &copy; 2025 ColdMarket.com, Inc. or its affiliates <br>
-                         <a href="#" style="text-decoration: none; color: #dbd9d9cc;"> 
-                         
-                   <center> Developed By TEENTEAM SOLUTIONS</center>
-                   <center>TTS DEVS</center>
-               </a>
+  
+                   <center class="DEVS"> Developed By <a href="#"><span>TEENTEAM SOLUTIONS</span></a></center>
+                  <center class="footer-copyright"> All rights are reserved</center>
+               
             </div>
         </div>
     </footer>
@@ -777,8 +799,6 @@
                     showErrorMessage(error);
                 }
             }
-
-           
             function displayProducts(products) {
                 const productGrid = document.getElementById('product-grid');
                 productGrid.innerHTML = ''; 
