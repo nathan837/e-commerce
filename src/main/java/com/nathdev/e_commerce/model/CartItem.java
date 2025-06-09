@@ -40,6 +40,18 @@ public class CartItem {
     }
 
 
+    public int getQuantity() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQuantity'");
+    }
+
+
+    public Object getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
+
+
 
     }
 

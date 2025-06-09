@@ -27,4 +27,25 @@ public class Cart {
     private Set<CartItem> cartItems;
     private Set<CartItem> items = new HashSet<>();
 
+    public Object getItems() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getItems'");
+    }
+    public BigDecimal getTotalAmount() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTotalAmount'");
+    }
+    public void addItem(CartItem cartItem) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addItem'");
+    }
+    public void removeItem(CartItem itemToRemove) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeItem'");
+    }
+    public Long getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
+
 }
