@@ -11,6 +11,7 @@ import com.nathdev.e_commerce.model.CartItem;
 import com.nathdev.e_commerce.repository.CartItemRepository;
 import com.nathdev.e_commerce.repository.CartRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,7 +29,8 @@ public class CartService implements ICartService{
           cart.setTotalAmount(totalAmount);
           return cartRepository.save(cart);
     }
-
+    
+    @Transactional
     @Override
     public void clearCart(Long id) {
        Cart cart = getCart(id);
@@ -51,6 +53,12 @@ public class CartService implements ICartService{
         return cartRepository.save(newCart).getId();
 
     }
+
+   @Override
+   public Cart getCartByUserId(Long user_id) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCartByUserId'");
+   }
 
     
 }

@@ -1,5 +1,6 @@
 package com.nathdev.e_commerce.service.cart;
 
+import com.nathdev.e_commerce.model.Cart;
 import com.nathdev.e_commerce.model.CartItem;
 
 public interface ICartItemService {
@@ -8,4 +9,5 @@ public interface ICartItemService {
     void removeItemToCart(Long cartId, Long productId);
     void updateItemQuantity(Long cartId , Long prodcutId , int quantity);
     CartItem getCartItem(Long cartId ,Long productId);
+  
 }

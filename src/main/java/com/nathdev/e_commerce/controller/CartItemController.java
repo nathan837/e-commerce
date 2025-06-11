@@ -26,15 +26,16 @@ public class CartItemController {
     
         private final ICartItemService cartItemService;
         private final ICartService cartService;
+
 @PostMapping("/item/add")
-    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long cartId , @RequestParam Long itemId , Integer quantity){
+    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId , @RequestParam Long productId , @RequestParam Integer quantity){
         try{
             if (cartId == null) {
                cartId =  cartService.initializeNewCart();
-               
+
 
             }
-          cartItemService.addItemToCart(cartId, itemId, quantity);
+          cartItemService.addItemToCart(cartId, productId, quantity);
           return ResponseEntity.ok(new ApiResponse("Add Item SUCCESS", null));
         }catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

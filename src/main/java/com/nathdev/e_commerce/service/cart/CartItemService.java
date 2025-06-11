@@ -63,7 +63,7 @@ public class CartItemService implements ICartItemService{
         .findFirst().ifPresent(item -> {item.setQuantity(quantity); item.setUnitPrice(item.getProduct().getPrice());
             item.setTotalPrice();
         });
-        BigDecimal totalAmount = cart.getTotalAmount(); 
+        BigDecimal totalAmount = cart.getItems().stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO , BigDecimal::add);
         cart.setTotalAmount(totalAmount);
         cartRepository.save(cart); 
     }
@@ -75,6 +75,5 @@ public class CartItemService implements ICartItemService{
       .equals(productId)).findFirst().orElseThrow(() -> new ResourceNotFoundException("Item not found"));
         return null;
     }
-  
 }
  
