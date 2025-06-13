@@ -6,4 +6,6 @@ import com.nathdev.e_commerce.model.Cart;
 
 public interface CartRepository extends JpaRepository<Cart, Long>{
 
+    public Cart findByUserId(Long userId);
+
 }

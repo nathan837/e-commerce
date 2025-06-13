@@ -2,6 +2,7 @@ package com.nathdev.e_commerce.model;
 
 import java.util.List;
 
+import org.hibernate.annotations.NaturalId;
 
 import jakarta.persistence.OneToMany;
 
@@ -27,6 +28,7 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
+    @NaturalId
     private String email;
     private String password;
 

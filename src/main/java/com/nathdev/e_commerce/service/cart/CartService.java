@@ -55,9 +55,9 @@ public class CartService implements ICartService{
     }
 
    @Override
-   public Cart getCartByUserId(Long user_id) {
+   public Cart getCartByUserId(Long userId) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCartByUserId'");
+    return cartRepository.findByUserId(userId);
    }
 
     
