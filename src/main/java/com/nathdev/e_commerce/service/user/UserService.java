@@ -1,7 +1,10 @@
 package com.nathdev.e_commerce.service.user;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.nathdev.e_commerce.exceptions.AlreadyExistsException;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.User;
 import com.nathdev.e_commerce.repository.UserRepository;
@@ -24,9 +27,17 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User createUser(CreateUserRequest user) {
+    public User createUser(CreateUserRequest request) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+        return Optional.of(request).filter(user ->  !userRepository.existsByEmail(request.getEmail()))
+        .map(req -> {
+            User user = new User();
+            user.setEmail(request.getEmail());
+            user.setPassword(request.getPassword());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new AlreadyExistsException("Oops!" + request.getEmail() + "already Exists!"));
     }
 
     @Override
@@ -35,6 +46,7 @@ public class UserService implements IUserService{
         return userRepository.findById(userId).map(existingUser -> {
             existingUser.setFirstName(request.getFirstName());
             existingUser.setLastName(request.getLastName());
+            return userRepository.save(existingUser);
         }).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
     }

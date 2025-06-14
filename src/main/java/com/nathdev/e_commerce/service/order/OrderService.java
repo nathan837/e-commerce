@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.nathdev.e_commerce.DTO.OrderDto;
 import com.nathdev.e_commerce.enums.OrderStatus;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.Cart;
@@ -26,12 +28,14 @@ public class OrderService implements IOrderService{
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CartService cartService;
+    private final ModelMapper modelMapper;
    
     @Transactional
     @Override
     public Order placeOrder(Long userId) {
         // TODO Auto-generated method st
      Cart cart = cartService.getCartByUserId(userId);
+     
      Order order = createOrder(cart);
      List<OrderItem> orderItemList = createOrderItems(order , cart);
      order.setOrderItems(new HashSet<>(orderItemList));
@@ -59,14 +63,19 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public Order getOrder(Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+    public OrderDto getOrder(Long orderId) {
+        return orderRepository.findById(orderId).map(this::convertToDto)
+        .orElseThrow(() -> new ResourceNotFoundException("No Order found"));
     
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId){
-        return orderRepository.findByUserId(userId);
-    }
+    public List<OrderDto> getUserOrders(Long userId){
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream().map(this :: convertToDto).toList();
+        }
     
+    private OrderDto convertToDto( Order order){
+        return modelMapper.map(order, OrderDto.class);
+    }
 }
