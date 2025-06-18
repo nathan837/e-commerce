@@ -52,7 +52,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public static void deleteUser(Long userId) {
         // TODO Auto-generated method stub
         userRepository.findById(userId).ifPresentOrElse(userRepository::delete, ()-> {
             throw new ResourceNotFoundException("User not found");
