@@ -2,8 +2,10 @@ package com.nathdev.e_commerce.service.user;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.nathdev.e_commerce.DTO.UserDto;
 import com.nathdev.e_commerce.exceptions.AlreadyExistsException;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.User;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService implements IUserService{
 
             private final UserRepository userRepository;
+            private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(Long userId) {
@@ -52,11 +55,17 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public static void deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         // TODO Auto-generated method stub
         userRepository.findById(userId).ifPresentOrElse(userRepository::delete, ()-> {
             throw new ResourceNotFoundException("User not found");
         });
+    }
+    
+    @Override
+    public UserDto convertUserToDto(User user){
+    return modelMapper.map(user, UserDto.class);
+
     }
     
 }

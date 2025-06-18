@@ -13,7 +13,7 @@ public interface I_ProductService {
     Product getProductById(Long id);
     void deleteProductById(Long id);
     ProductDto convertToDto(Product product);
-    Product updateProduct(ProductUpdateRequest product, Long productId); // ✅ Correct Signature
+    Product updateProduct(ProductUpdateRequest product, Long productId); 
     List<Product> getAllProduct();
     List<Product> getProductByCategory(String category);
     List<Product> getProductByBrand(String brand);
