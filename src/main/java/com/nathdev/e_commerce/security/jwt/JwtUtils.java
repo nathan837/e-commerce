@@ -12,6 +12,15 @@ import org.springframework.stereotype.Component;
 
 import com.nathdev.e_commerce.security.user.ShopUserDetail;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 @Component
 public class JwtUtils {
 
@@ -28,10 +37,10 @@ public class JwtUtils {
             return Jwts.builder()
                         .setSubject(userPrincipal.getEmail())
                         .claim("id" , userPrincipal.getId())
-                        .claim("roles" roles)
+                        .claim("roles", roles)
                         .setIssuedAt(new Date())
                         .setExpiration(new Date((new Date()).getTime() + expirationTime))
-                        .setWith(key(), SignatureAlgorithm.HS256).compact();
+                        .signWith(key(), SignatureAlgorithm.HS256).compact();
     }
     private Key key(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -52,7 +61,7 @@ public class JwtUtils {
                 .build()
                 .parseClaimsJws(token);
             return true;
-    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |SignatureException | IllegalArgumentException e) {
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
           throw new JwtException(e.getMessage());
         }
     }

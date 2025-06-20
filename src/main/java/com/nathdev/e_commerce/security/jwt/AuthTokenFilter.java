@@ -12,8 +12,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.nathdev.e_commerce.security.user.ShopUserDetailService;
 
 import ch.qos.logback.core.util.StringUtil;
+import io.jsonwebtoken.JwtException;
 import io.micrometer.common.lang.NonNull;
-import io.micrometer.common.util.StringUtils;
+import org.springframework.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
