@@ -73,8 +73,9 @@ public class OrderService implements IOrderService{
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream().map(this :: convertToDto).toList();
         }
-    
-    private OrderDto convertToDto( Order order){
+        
+    @Override
+    public OrderDto convertToDto( Order order){
         return modelMapper.map(order, OrderDto.class);
     }
 }

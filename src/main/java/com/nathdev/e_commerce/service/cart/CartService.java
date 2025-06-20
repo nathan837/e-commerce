@@ -1,6 +1,7 @@
 package com.nathdev.e_commerce.service.cart;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.Cart;
 import com.nathdev.e_commerce.model.CartItem;
+import com.nathdev.e_commerce.model.User;
 import com.nathdev.e_commerce.repository.CartItemRepository;
 import com.nathdev.e_commerce.repository.CartRepository;
 
@@ -45,12 +47,13 @@ public class CartService implements ICartService{
     return cart.getTotalAmount();
     }
     
-   @Override
-    public  Long initializeNewCart(){
-        Cart newCart = new Cart();
-        Long newCartId = cartIdGenerator.incrementAndGet();
-        newCart.setId(newCartId);
-        return cartRepository.save(newCart).getId();
+    public Cart initializeNewCart(User user){
+      return Optional.ofNullable(getCartByUserId(user.getId()))
+            .orElseGet(() -> {
+                Cart cart = new Cart();
+                cart.setUser(user);
+                return cartRepository.save(cart);
+            } );
 
     }
 

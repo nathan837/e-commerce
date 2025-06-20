@@ -2,6 +2,8 @@ package com.nathdev.e_commerce.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +24,7 @@ public class OrderItem{
     private long id;
     private int quantity;
     private BigDecimal price;
-    
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

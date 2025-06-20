@@ -34,7 +34,7 @@ public class UserController {
     
 
  @GetMapping("/{userId}/user")
- public ResponseEntity<ApiResponse>getUserById(@pathvariable Long id){
+ public ResponseEntity<ApiResponse>getUserById(@PathVariable Long id){
  try{
     User user = userService.getUserById(id);
     UserDto userDto = userService.convertUserToDto(user);
@@ -54,7 +54,7 @@ public class UserController {
     }
  }
  @PutMapping("/{userId}/update")
- public ResponseEntity<ApiResponse> updateUser(@RequestBody UserUpdateRequest request , @pathvariable Long userId){
+ public ResponseEntity<ApiResponse> updateUser(@RequestBody UserUpdateRequest request , @PathVariable Long userId){
     try{
         User user = userService.updateUser(request, userId);
         UserDto userDto = userService.convertUserToDto(user);

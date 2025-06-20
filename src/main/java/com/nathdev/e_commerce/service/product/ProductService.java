@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.nathdev.e_commerce.DTO.ImageDto;
 import com.nathdev.e_commerce.DTO.ProductDto;
+import com.nathdev.e_commerce.exceptions.AlreadyExistsException;
 import com.nathdev.e_commerce.exceptions.ProductNotFoundException;
 import com.nathdev.e_commerce.model.Category;
 import com.nathdev.e_commerce.model.Image;
@@ -33,6 +34,9 @@ public class ProductService implements I_ProductService {
     @Override
     public Product addProduct(AddProductRequest request) {
         
+         if(productExists(request.getName(), request.getBrand())){
+            throw new AlreadyExistsException(request.getBrand() + " " + request.getName()+ " Already exist , You  may update this product instead!");
+         }
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
              .orElseGet(() -> {
                Category  newCategory = new Category(null, request.getCategory().getName(), null);
@@ -41,6 +45,9 @@ public class ProductService implements I_ProductService {
              request.setCategory(category);
              return productRepository.save(createProduct(request, category));
     }
+        private boolean productExists(String name , String brand ){
+            return productRepository.existsByNameAndBrand(name , brand);
+        }
        private Product createProduct(AddProductRequest request , Category category ){
 
           return new Product(
@@ -77,7 +84,6 @@ public class ProductService implements I_ProductService {
                  existingProduct.setPrice(request.getPrice());
                  existingProduct.setInventory(request.getInventory());
                  existingProduct.setDescription(request.getDescription());
-    
                  Category category = categoryRepository.findByName(request.getCategory().getName());
                  existingProduct.setCategory(category);
                  return existingProduct;

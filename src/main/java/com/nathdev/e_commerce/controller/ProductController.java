@@ -3,6 +3,7 @@ package com.nathdev.e_commerce.controller;
 import java.util.List;
 
 import org.apache.catalina.connector.Response;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nathdev.e_commerce.DTO.ProductDto;
+import com.nathdev.e_commerce.exceptions.AlreadyExistsException;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.Product;
 import com.nathdev.e_commerce.request.AddProductRequest;
@@ -56,8 +58,8 @@ public class ProductController {
         try{
           Product theProduct = productService.addProduct(product);
           return ResponseEntity.ok(new ApiResponse("Add Product Success !", theProduct));
-        }catch(Exception e){
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }catch(AlreadyExistsException e){
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
     }
 @PutMapping("/product/{productId}/update")

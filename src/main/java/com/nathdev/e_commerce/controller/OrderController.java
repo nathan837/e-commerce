@@ -1,12 +1,12 @@
 package com.nathdev.e_commerce.controller;
 
-import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,24 +30,24 @@ public class OrderController {
   public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId){
     try{
     Order order = orderService.placeOrder(userId);
-    return ResponseEntity.ok( new ApiResponse("Item Order Success", order));
+    OrderDto orderDto = orderService.convertToDto(order);
+    return ResponseEntity.ok( new ApiResponse("Item Order Success", orderDto));
     }catch(Exception e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error Occured! ", e.getMessage()));
     }
 }
 @GetMapping("/{orderId}/order")
-  public ResponseEntity<ApiResponse> getOrderById(@pathvariable Long orderId){
+  public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId){
     try {        
         OrderDto order = orderService.getOrder(orderId);
         return ResponseEntity.ok(new ApiResponse("Item Order Success", order));
-    } catch (Exception e) {
+  } catch (Exception e) {
         return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Oops!" , e.getMessage()));
     }
-
   }
- 
+
   @GetMapping("/{userId}/order")
-  public ResponseEntity<ApiResponse> getUserOrders(@pathvariable Long userId){
+  public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId){
     try {        
         List<OrderDto> order = orderService.getUserOrders(userId);
         return ResponseEntity.ok(new ApiResponse("Item Order Success", order));
