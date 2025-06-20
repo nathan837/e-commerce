@@ -10,15 +10,12 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 - Category management
 - Shopping cart functionality
 - Order creation and tracking
-- API documentation with Swagger
 
 ## 🛠 Tech Stack
 
 - **Backend**: Spring Boot
-- **Database**: MySQL / PostgreSQL / H2 (Dev)
+- **Database**: MySQL
 - **Security**: Spring Security, JWT
-- **API Docs**: Swagger (Springdoc / OpenAPI)
-- **ORM**: Hibernate + JPA
 
 ## 🚀 Getting Started
 
@@ -26,12 +23,12 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 
 - Java 17+
 - Maven
-- MySQL or PostgreSQL
+- MySQL 
 
 ### Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/nathan837/ecommerce-api-springboot.git
-cd ecommerce-api-springboot
+git clone https://github.com/nathan837/e-commerce.git
+cd e-commerce
