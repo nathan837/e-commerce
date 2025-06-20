@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+
 public class shopConfig {
 
     private final ShopUserDetailService userDetailService;
@@ -38,18 +39,22 @@ public class shopConfig {
 
         return new ModelMapper();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthTokenFilter authTokenFilter(){
         return new AuthTokenFilter();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig )throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         var authProvider = new DaoAuthenticationProvider();
@@ -57,6 +62,7 @@ public class shopConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.csrf(AbstractHttpConfigurer::disable)
@@ -66,6 +72,5 @@ public class shopConfig {
         http.authenticationProvider(daoAuthenticationProvider());
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
     }
 }
