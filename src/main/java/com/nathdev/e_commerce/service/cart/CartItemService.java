@@ -1,6 +1,7 @@
 package com.nathdev.e_commerce.service.cart;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -24,28 +25,33 @@ public class CartItemService implements ICartItemService{
     private ICartService cartService;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addItemToCart(Long cartId, Long productId, int quantity) {
-
-      Cart cart = cartService.getCart(cartId);
-      Product product = productService.getProductById(productId);
-      CartItem cartItem = cart.getItems()
-      .stream().filter(item -> item.getProduct().equals(productId)).findFirst().orElse(new CartItem());
-
-      if (cartItem.getId() == null) {
-          cartItem.setCart(cart);
-          cartItem.setProduct(product);
-          cartItem.setQuantity(quantity);
-          cartItem.setUnitPrice(product.getPrice());
-      }
-      else{
-        cartItem.setQuantity(cartItem.getQuantity() + quantity);
-      }
-      cartItem.setTotalPrice();
-      cart.addItem(cartItem); 
-      cartItemRepository.save(cartItem);
-      cartRepository.save(cart);
-
+        Cart cart = cartService.getCart(cartId);
+        Product product = productService.getProductById(productId);
+    
+        List<CartItem> items = (List<CartItem>) cart.getItems(); // FIX: cast to proper type
+    
+        CartItem cartItem = items.stream()
+            .filter(item -> item.getProduct().getId().equals(productId)) // FIX: compare ID
+            .findFirst()
+            .orElse(new CartItem());
+    
+        if (cartItem.getId() == null) {
+            cartItem.setCart(cart);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem.setUnitPrice(product.getPrice());
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        }
+    
+        cartItem.setTotalPrice();
+        cart.addItem(cartItem); 
+        cartItemRepository.save(cartItem);
+        cartRepository.save(cart);
     }
+    
 
     @Override
     public void removeItemToCart(Long cartId, Long productId) {
