@@ -33,5 +33,5 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/ecommerce-api-springboot.git
+git clone https://github.com/nathan837/ecommerce-api-springboot.git
 cd ecommerce-api-springboot
