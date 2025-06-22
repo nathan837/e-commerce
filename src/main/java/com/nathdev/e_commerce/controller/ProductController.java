@@ -2,12 +2,11 @@ package com.nathdev.e_commerce.controller;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import static org.springframework.http.HttpStatus.CONFLICT;
-
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nathdev.e_commerce.DTO.ProductDto;
 import com.nathdev.e_commerce.exceptions.AlreadyExistsException;
-import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.Product;
 import com.nathdev.e_commerce.request.AddProductRequest;
 import com.nathdev.e_commerce.request.ProductUpdateRequest;
@@ -53,6 +51,7 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
      }
+     @PreAuthorize("hasRole('ROLE_ADMIN')")
 @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest product){
         try{
@@ -62,6 +61,7 @@ public class ProductController {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 @PutMapping("/product/{productId}/update")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest request , @PathVariable Long productId){
         try {
@@ -71,6 +71,7 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body( new ApiResponse(e.getMessage(), null));
         }
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 @DeleteMapping("/product/{productId}/delete")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId){
         try {

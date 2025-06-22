@@ -20,7 +20,6 @@ import com.nathdev.e_commerce.request.CreateUserRequest;
 import com.nathdev.e_commerce.request.UserUpdateRequest;
 import com.nathdev.e_commerce.response.ApiResponse;
 import com.nathdev.e_commerce.service.user.IUserService;
-import com.nathdev.e_commerce.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,8 +65,7 @@ public class UserController {
  @DeleteMapping("/{userId}/delete")
    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId){
       try{
-        UserService userService1 = new UserService(null, null);
-        userService1.deleteUser(userId);
+        userService.deleteUser(userId);
         return ResponseEntity.ok(new ApiResponse("Delete User Sucess",null));
       }catch(ResourceNotFoundException e){
       return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
