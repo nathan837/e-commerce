@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.nathdev.e_commerce.security.jwt.AuthTokenFilter;
 import com.nathdev.e_commerce.security.jwt.JwtAuthEntryPoint;
-import com.nathdev.e_commerce.security.user.ShopUserDetail;
 import com.nathdev.e_commerce.security.user.ShopUserDetailService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,16 +27,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-
+@EnableMethodSecurity(prePostEnabled = true)
 public class shopConfig {
 
     private final ShopUserDetailService userDetailService;
     private final JwtAuthEntryPoint authEntryPoint;
-    private static final List<String> SECURED_URLS = List.of( "");
+    private static final List<String> SECURED_URLS = List.of( "/api/v1/cart/**" , "/api/v1/cartItem/**" );
 
     @Bean
     public ModelMapper modelMapper(){
-
         return new ModelMapper();
     }
 
