@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.nathdev.e_commerce.security.jwt.AuthTokenFilter;
 import com.nathdev.e_commerce.security.jwt.JwtAuthEntryPoint;
+import com.nathdev.e_commerce.security.jwt.JwtUtils;
 import com.nathdev.e_commerce.security.user.ShopUserDetailService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,9 @@ public class shopConfig {
 
     private final ShopUserDetailService userDetailService;
     private final JwtAuthEntryPoint authEntryPoint;
-    private static final List<String> SECURED_URLS = List.of( "/api/v1/cart/**" , "/api/v1/cartItem/**" );
+    private final JwtUtils jwtUtils;
+    
+    private static final List<String> SECURED_URLS = List.of( "/cooldMarket/api/cart/**" , "/cooldMarket/api/cartItem/**" );
 
     @Bean
     public ModelMapper modelMapper(){
@@ -44,10 +47,11 @@ public class shopConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthTokenFilter authTokenFilter(){
-        return new AuthTokenFilter();
-    }
+  @Bean
+   public AuthTokenFilter authTokenFilter(JwtUtils jwtUtils, ShopUserDetailService userDetailService) {
+    return new AuthTokenFilter(jwtUtils, userDetailService);
+}
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig )throws Exception {
@@ -68,8 +72,7 @@ public class shopConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new )).authenticated().anyRequest().permitAll());
-        http.authenticationProvider(daoAuthenticationProvider());
-        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authTokenFilter(jwtUtils, userDetailService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
