@@ -1,18 +1,15 @@
 package com.nathdev.e_commerce.controller;
 
-import org.springframework.http.HttpHeaders;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.print.attribute.standard.Media;
-
-import org.apache.coyote.Response;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,15 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.nathdev.e_commerce.DTO.ImageDto;
 import com.nathdev.e_commerce.exceptions.ResourceNotFoundException;
 import com.nathdev.e_commerce.model.Image;
 import com.nathdev.e_commerce.response.ApiResponse;
 import com.nathdev.e_commerce.service.image.IimageService;
-import com.nathdev.e_commerce.service.image.imageService;
 
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class ImageController {
     
     private final IimageService imageService;
-   
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 @PostMapping("/upload")
     public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> file , @RequestParam Long ProductId){
         try{
@@ -78,7 +73,7 @@ public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageI
 }
 
 
-
+ @PreAuthorize("hasRole('ROLE_ADMIN')")
 @PutMapping("image/{imageId}/update")
   public ResponseEntity<ApiResponse> updateImage(@PathVariable Long ImageId , @RequestBody MultipartFile file){
     try{
@@ -92,7 +87,7 @@ public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageI
     }
     return ResponseEntity.status(INTERNAL_SERVER_ERROR).body( new ApiResponse("Update faild", INTERNAL_SERVER_ERROR));
   }
-
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("image/{imageId}/delete")
   public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long ImageId){
     try{
