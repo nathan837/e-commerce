@@ -12,16 +12,21 @@ import com.nathdev.e_commerce.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
-public class ShopUserDetailService implements UserDetailsService{
+@Service
+public class ShopUserDetailService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        System.out.println(" Trying to load user by email: " + email);
+
+        User user = Optional.ofNullable(userRepository.findByEmail(email))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        System.out.println(" User found with email: " + user.getEmail());
+
         return ShopUserDetail.buildUserDetails(user);
     }
-    
-    
 }
