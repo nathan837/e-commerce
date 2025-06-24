@@ -25,54 +25,58 @@ import com.nathdev.e_commerce.security.user.ShopUserDetailService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class shopConfig {
 
     private final ShopUserDetailService userDetailService;
     private final JwtAuthEntryPoint authEntryPoint;
     private final JwtUtils jwtUtils;
-    
-    private static final List<String> SECURED_URLS = List.of( "/cooldMarket/api/cart/**" , "/cooldMarket/api/cartItem/**" );
+
+    private static final List<String> SECURED_URLS = List.of("/cooldMarket/api/cart/**", "/cooldMarket/api/cartItem/**");
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-  @Bean
-   public AuthTokenFilter authTokenFilter(JwtUtils jwtUtils, ShopUserDetailService userDetailService) {
-    return new AuthTokenFilter(jwtUtils, userDetailService);
-}
-
-
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig )throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        var authProvider = new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
-        http.csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new )).authenticated().anyRequest().permitAll());
-        http.addFilterBefore(authTokenFilter(jwtUtils, userDetailService), UsernamePasswordAuthenticationFilter.class);
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public AuthTokenFilter authTokenFilter() {
+        return new AuthTokenFilter(jwtUtils, userDetailService);
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPoint))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(SECURED_URLS.toArray(new String[0])).authenticated()
+                .anyRequest().permitAll()
+            );
+
+        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

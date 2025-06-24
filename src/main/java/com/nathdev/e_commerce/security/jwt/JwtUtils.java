@@ -1,7 +1,6 @@
 package com.nathdev.e_commerce.security.jwt;
 
 import java.security.Key;
-import java.security.SignatureException;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +64,4 @@ public class JwtUtils {
           throw new JwtException(e.getMessage());
         }
     }
-
-    
 }
