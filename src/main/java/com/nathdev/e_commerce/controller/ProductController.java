@@ -2,11 +2,10 @@ package com.nathdev.e_commerce.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -115,7 +114,7 @@ public class ProductController {
                                  .body(new ApiResponse("Error! : " + e.getMessage(), null));
         }
 }
-@GetMapping("/product{name}/products")
+@GetMapping("/product/{name}/product")
     public ResponseEntity<ApiResponse>getProductByName(@PathVariable String name){
         try {
             List<Product> products= productService.getProductByName(name);
