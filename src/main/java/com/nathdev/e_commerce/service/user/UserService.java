@@ -2,8 +2,8 @@ package com.nathdev.e_commerce.service.user;
 
 import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,8 @@ public class UserService implements IUserService{
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-       return userRepository.findByEmail(email); // This method should be implemented to return the currently authenticated user
+       return userRepository.findByEmail(email)
+               .orElseThrow(() -> new ResourceNotFoundException("Authenticated user not found"));
     }
     
 }
