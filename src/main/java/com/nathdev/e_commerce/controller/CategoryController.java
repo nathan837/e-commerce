@@ -1,13 +1,10 @@
 package com.nathdev.e_commerce.controller;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +50,7 @@ public class CategoryController {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));  
         }
     }
-@GetMapping("/category/{id}/category")
+@GetMapping("/category/id/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id){
         try {
             Category theCategory = categoryService.getCategoryById(id);
@@ -62,7 +59,7 @@ public class CategoryController {
             return  ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
-@GetMapping("/category/{name}/category")
+@GetMapping("/category/name/{name}")
     public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name){
         try {
             Category theCategory = categoryService.getCategoryByName(name);

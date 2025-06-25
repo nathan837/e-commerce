@@ -41,7 +41,7 @@ public class ProductController {
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return ResponseEntity.ok(new ApiResponse("SUCCESS", convertedProducts));
     }
-@GetMapping("/product/{productId}/product")
+@GetMapping("/product/id/{productId}")
      public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
         try{
         Product product = productService.getProductById(productId);
@@ -114,12 +114,12 @@ public class ProductController {
                                  .body(new ApiResponse("Error! : " + e.getMessage(), null));
         }
 }
-@GetMapping("/product/{name}/product")
+@GetMapping("/product/name/{name}")
     public ResponseEntity<ApiResponse>getProductByName(@PathVariable String name){
         try {
             List<Product> products= productService.getProductByName(name);
             if (products.isEmpty()) {
-                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No product found", null));
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Product not found", null));
             }
             List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
             return ResponseEntity.ok(new ApiResponse("", convertedProducts));
@@ -151,7 +151,7 @@ public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand
 }
 
 
-@GetMapping("/products/{category}/all/products")
+@GetMapping("/at/category/{category}")
     public ResponseEntity<ApiResponse> findProductByCategory(@PathVariable String category){ 
         try{
             List<Product>products = productService.getProductByCategory(category);
