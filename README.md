@@ -12,7 +12,7 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 - Order creation and tracking
 
 ## 🛠 Tech Stack
-
+- **Frontend**: React
 - **Backend**: Spring Boot
 - **Database**: MySQL
 - **Security**: Spring Security, JWT
@@ -20,7 +20,9 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 ## 🚀 Getting Started
 
 ### Prerequisites
-
+- HTML
+- CSS
+- JS
 - Java 17+
 - Maven
 - MySQL 
