@@ -9,10 +9,10 @@ function Navbar() {
       display: "flex",
       justifyContent: "space-between"
     }}>
-      <h2>Cold Market</h2>
+      <h2 style={{fontFamily:"sans-serif" , fontWeight:"700px", marginLeft:"100px"}}>Cold Market</h2>
       <div>
         <a href="#" style={{ color: "#fff", marginRight: "15px" }}>Home</a>
-        <a href="#" style={{ color: "#fff" }}>Categories</a>
+        <a href="#" style={{ color: "#fff"}}>Categories</a>
       </div>
     </nav>
   );
