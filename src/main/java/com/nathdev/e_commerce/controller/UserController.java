@@ -3,6 +3,7 @@ package com.nathdev.e_commerce.controller;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("${api.prefix}/user")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
     
     private final IUserService userService;
