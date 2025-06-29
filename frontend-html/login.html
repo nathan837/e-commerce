@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
-    --primary: #4a6fa5;
+    --primary: #31c5ff;
     --secondary: #166088;
     --dark: #1c1c1c;
     --light: #f8f9fa;
@@ -23,7 +23,7 @@
   }
   
   body {
-    background: linear-gradient(135deg, #2f4f4f 0%, #1a2e2e 100%);
+    background: linear-gradient(135deg, #232424 0%, #000000 100%);
     color: var(--light);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -121,7 +121,7 @@
   }
   
   .btn-primary:hover {
-    background-color: #3a5a8a;
+    background-color: #0d80c2;
     transform: translateY(-2px);
   }
   
@@ -359,7 +359,7 @@
     if (localStorage.getItem('authToken')) {
       showMessage('You are already logged in. Redirecting...', 'success');
       setTimeout(() => {
-        window.location.href = 'http://127.0.0.1:5500/frontend-html/productsPage.html'; // Change to your dashboard page
+        window.location.href = '../frontend-html/productsPage.html'; // Change to your dashboard page
       }, 1500);
     }
   });
