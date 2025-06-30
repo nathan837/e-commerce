@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login Page</title>
+<title>ColdMarket-Login Page</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
@@ -324,7 +324,7 @@
           // Show success message
           showMessage('Login successful! Redirecting...', 'success');
           
-          // Simulate redirect after delay
+    
             setTimeout(() => {
                 window.location.href = '/productsPage.html'; // Change to your dashboard page
             }, 1500);
@@ -341,13 +341,14 @@
       }
     });
     
-    // Helper function to show messages
+    
     function showMessage(text, type) {
       messageDiv.textContent = text;
       messageDiv.className = 'message ' + type;
       messageDiv.style.display = 'block';
-      
-      // Auto-hide error messages after 5 seconds
+       
+
+
       if (type === 'error') {
         setTimeout(() => {
           messageDiv.style.display = 'none';
@@ -355,11 +356,10 @@
       }
     }
     
-    // Check if user is already logged in
     if (localStorage.getItem('authToken')) {
       showMessage('You are already logged in. Redirecting...', 'success');
       setTimeout(() => {
-        window.location.href = '../frontend-html/productsPage.html'; // Change to your dashboard page
+        window.location.href = '../ColdMarket/productspage.html'; // Change to your dashboard page
       }, 1500);
     }
   });
