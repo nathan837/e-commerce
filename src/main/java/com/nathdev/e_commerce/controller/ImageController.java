@@ -60,7 +60,7 @@ public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageI
     
     if (image == null || image.getImage() == null) {
         return ResponseEntity.status(NOT_FOUND)
-                .body(null); // or return a proper ApiResponse with NOT_FOUND
+                .body(null); 
     }
 
     byte[] imageBytes = image.getImage().getBytes(1, (int) image.getImage().length());
@@ -73,7 +73,7 @@ public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageI
 }
 
 
- @PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @PutMapping("image/{imageId}/update")
   public ResponseEntity<ApiResponse> updateImage(@PathVariable Long ImageId , @RequestBody MultipartFile file){
     try{

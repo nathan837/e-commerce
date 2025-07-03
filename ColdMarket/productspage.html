@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Light Theme */
+           
             --primary-light: #1d7ca8;
             --secondary-light: #232F3E;
             --background-light: #FFFFFF;
@@ -18,7 +18,7 @@
             --success-light: #067D62;
             --danger-light: #bd2600;
             
-            /* Dark Theme */
+            
             --primary-dark: #00c0ce;
             --secondary-dark: #131921;
             --background-dark: #121212;
@@ -29,7 +29,7 @@
             --success-dark: #00C896;
             --danger-dark: #ff3e3e;
             
-            /* Current Theme (defaults to light) */
+           
             --primary: var(--primary-light);
             --secondary: var(--secondary-light);
             --background: var(--background-light);
@@ -67,7 +67,7 @@
             min-height: 100vh;
         }
 
-        /* Header Styles */
+        
         .navbar {
             background-color: var(--secondary);
             height: 60px;
@@ -463,7 +463,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Footer */
+     
         footer {
             background-color: var(--secondary);
             color: white;
@@ -513,7 +513,7 @@
             color: #AAAAAA;
         }
 
-        /* Responsive Design */
+     
         @media (max-width: 768px) {
             .navbar {
                 flex-wrap: wrap;
@@ -560,7 +560,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
+    
     <nav class="navbar">
         <a href="#" class="navbar-logo">
             <i class="fas fa-snowflake logo-icon"></i>
@@ -609,9 +609,9 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    
     <div class="container">
-        <!-- Filters Section -->
+      
         <div class="filters">
             <div class="filter-group">
                 <span class="filter-label">Sort by:</span>
@@ -656,17 +656,17 @@
             </div>
         </div>
         
-        <!-- Results Info -->
+        
         <div class="results-info">
             <span id="results-count">Loading products...</span>
         </div>
         
-        <!-- Product Grid -->
+       
         <div class="product-grid" id="product-grid">
-            <!-- Products will be loaded here dynamically -->
+            
         </div>
         
-        <!-- Pagination -->
+        
         <div class="pagination">
             <button class="pagination-button"><i class="fas fa-chevron-left"></i> Previous</button>
             <button class="pagination-button active">1</button>
@@ -678,7 +678,7 @@
         </div>
     </div>
     
-    <!-- Footer -->
+    
     <footer>
         <div class="footer-content">
             <div class="footer-column">
@@ -739,11 +739,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Theme Toggle Functionality
+   
             const themeToggle = document.getElementById('themeToggle');
             const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
             
-            // Check for saved theme preference or use system preference
+            
             const currentTheme = localStorage.getItem('theme') || 
                                 (prefersDarkScheme.matches ? 'dark' : 'light');
             
@@ -766,11 +766,11 @@
                 localStorage.setItem('theme', theme);
             });
 
-            // Fetch products with error handling
+           
             async function fetchProducts() {
                 const productGrid = document.getElementById('product-grid');
                 
-                // Show loading state
+               
                 productGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
                         <div class="spinner"></div>
@@ -788,7 +788,7 @@
                     const data = await response.json();
                     console.log('API Response:', data);
                     
-                    // Handle your specific response structure
+                   
                     if (data.message === "SUCCESS" && Array.isArray(data.data)) {
                         displayProducts(data.data);
                     } else {
@@ -925,12 +925,12 @@
             }
 
             function addToCart(productId) {
-                // In a real app, you would send this to your backend
+             
                 console.log('Adding product to cart:', productId);
                 const cartCount = document.querySelector('.cart-count');
                 cartCount.textContent = parseInt(cartCount.textContent) + 1;
                 
-                // Show feedback
+               
                 const button = document.querySelector(`.btn-add-to-cart[data-id="${productId}"]`);
                 const originalText = button.innerHTML;
                 button.innerHTML = '<i class="fas fa-check"></i> Added';
@@ -942,7 +942,7 @@
                 }, 2000);
             }
 
-            // Initialize the page
+            
             fetchProducts();
         });
     </script>
