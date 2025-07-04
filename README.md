@@ -1,4 +1,4 @@
-# 🛍️ E-Commerce API (Spring Boot)
+# 🛍️ E-Commerce fullstack Website
 
 A backend RESTful API built using **Spring Boot** for an e-commerce platform. This API provides essential features such as product management, user authentication, order processing, and shopping cart functionality.
 
