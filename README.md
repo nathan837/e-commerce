@@ -26,3 +26,4 @@ A backend RESTful API built using **Spring Boot** for an e-commerce platform. Th
 - Java 17+
 - Maven
 - MySQL 
+### Developed for ColdMarket Company &copy 2025
