@@ -63,7 +63,7 @@ public class ProductController {
         }
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-@PutMapping("/product/{productId}/update")
+@PutMapping("/product/update/{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest request , @PathVariable Long productId){
         try {
             Product product = productService.updateProduct(request, productId);
@@ -73,7 +73,7 @@ public class ProductController {
         }
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-@DeleteMapping("/product/{productId}/delete")
+@DeleteMapping("/product/delete/{productId}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId){
         try {
              productService.deleteProductById(productId);
@@ -82,7 +82,7 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body( new ApiResponse(e.getMessage(), null));
         }
     }
-@GetMapping("/products/by/brand-and-name")
+@GetMapping("/product/brand-and-name")
     public ResponseEntity<ApiResponse>getProductByBrandAndName(@RequestParam String brandName , @RequestParam String productName){
         try{
             List<Product> products = productService.getProductsByBrandAndName(brandName, productName);
@@ -98,7 +98,7 @@ public class ProductController {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
     }
 }
-@GetMapping("/products/by/category-and-brand")
+@GetMapping("/product/category-and-brand")
     public ResponseEntity<ApiResponse>getProductByCategoryAndBrand(@RequestParam String category, @RequestParam String brand){
         try{
             List<Product> products = productService.getProductByCategoryAndBrand(category, brand);

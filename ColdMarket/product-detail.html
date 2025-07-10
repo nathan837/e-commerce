@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    img {
+      max-width: 50%;
+      height: auto;
+    }
+    .container {
+      max-width: 800px;
+      
+      margin: 0 auto;
+    }
+    .product-info {
+      margin-top: 20px;
+    }
+    .product-info h1 {
+      margin-bottom: 10px;
+    }
+    .related-products {
+      margin-top: 30px;
+    }
+    .related-header {
+      margin-bottom: 15px;
+      font-size: 1.5em;
+      color: #333;
+    }
+    .error-message {
+      color: red;
+      display: none;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:disabled {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img id="product-image" src="https://via.placeholder.com/400x300?text=Loading..." alt="Product image" />
+    <div class="product-info">
+      <h1 id="product-title">Loading...</h1>
+      <p><strong>Description: </strong> <span id="product-description"></span></p>
+      <p><strong>Category:</strong> <span id="product-category"></span></p>
+      <p><strong style="color: rgb(19, 19, 19);">Price:</strong> <span style="color: green;" id="product-price"></span></p>
+      <button id="add-to-cart" disabled>Add to Cart</button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+    <div id="related-products" class="related-products"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLocalhost = window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1';
+      const baseUrl = isLocalhost 
+        ? 'http://localhost:9090/coldMarket/products'
+        : '/coldMarket/products';
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+
+      if (!productId) {
+        showError('No product ID provided in URL');
+        window.location.href = 'products.html';
+        return;
+      }
+
+      const elements = {
+        image: document.getElementById('product-image'),
+        title: document.getElementById('product-title'),
+        description: document.getElementById('product-description'),
+        category: document.getElementById('product-category'),
+        price: document.getElementById('product-price'),
+        addToCart: document.getElementById('add-to-cart'),
+        related: document.getElementById('related-products'),
+        error: document.getElementById('error-message')
+      };
+
+      let currentProduct = null;
+
+      fetchProduct();
+
+      async function fetchProduct() {
+        try {
+          showLoading('Loading product details...');
+          
+          const response = await fetch(`${baseUrl}/product/id/${productId}`);
+          
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+          }
+          
+          const result = await response.json();
+          
+          if (result.message === 'SUCCESS') {
+            currentProduct = result.data;
+            displayProduct(currentProduct);
+            if (currentProduct.category && currentProduct.brand) {
+              fetchRelatedProductsByCategoryAndBrand(
+                currentProduct.category.name, 
+                currentProduct.brand.name
+              );
+            } else {
+              elements.related.innerHTML = '<p>No related products available.</p>';
+            }
+          } else {
+            throw new Error('Unexpected API response structure');
+          }
+        } catch (error) {
+          console.error('Error loading product:', error);
+          showError(`Failed to load product: ${error.message}`);
+        }
+      }
+
+      function displayProduct(product) {
+        const imageId = product.image && product.image[0] ? product.image[0].id : null;
+        elements.image.src = imageId
+          ? `${baseUrl.replace('/products', '')}/images/image/download/${imageId}`
+          : 'https://via.placeholder.com/400x300?text=No+Image';
+        elements.image.alt = product.name || 'Product Image';
+
+        elements.title.textContent = product.name || 'Unknown Product';
+        elements.description.textContent = product.description || 'No description available';
+        elements.category.textContent = product.category ? product.category.name : 'Uncategorized';
+        elements.price.textContent = product.price ? `ETB ${product.price.toLocaleString()}` : 'Price not available';
+        elements.addToCart.disabled = false;
+        elements.addToCart.dataset.id = product.id;
+        elements.addToCart.addEventListener('click', addToCartHandler);
+      }
+
+      async function fetchRelatedProductsByCategoryAndBrand(category, brand) {
+        try {
+          elements.related.innerHTML = '<div class="loading">Loading related products...</div>';
+          
+          const response = await fetch(
+            `${baseUrl}/by/category-and-brand?category=${encodeURIComponent(category)}&brand=${encodeURIComponent(brand)}`
+          );
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const result = await response.json();
+          
+          if (result.message === 'SUCCESS' && Array.isArray(result.data)) {
+            const relatedProducts = result.data.filter(
+              product => product.id !== currentProduct.id
+            );
+            displayRelatedProducts(relatedProducts);
+          } else {
+            elements.related.innerHTML = '<p>No related products found for this category and brand.</p>';
+          }
+        } catch (error) {
+          console.error('Error loading related products:', error);
+          elements.related.innerHTML = '<p class="error-message">Failed to load related products.</p>';
+        }
+      }
+
+      function displayRelatedProducts(products) {
+        if (!products || products.length === 0) {
+          elements.related.innerHTML = '<p>No other products in this category and brand.</p>';
+          return;
+        }
+
+        elements.related.innerHTML = `
+          <h3 class="related-header">More ${currentProduct.category.name} from ${currentProduct.brand.name}</h3>
+          <div class="related-products-grid"></div>
+        `;
+        
+        const grid = elements.related.querySelector('.related-products-grid');
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+        grid.style.gap = '15px';
+        grid.style.marginTop = '10px';
+
+        products.forEach(function(product) {
+          const card = document.createElement('div');
+          card.className = 'related-card';
+          
+          const imageId = product.image && product.image[0] ? product.image[0].id : null;
+          const imageUrl = imageId
+            ? `${baseUrl.replace('/products', '')}/images/image/download/${imageId}`
+            : 'https://via.placeholder.com/200x150?text=No+Image';
+
+          card.innerHTML = `
+            <a href="product-detail.html?id=${product.id}" style="text-decoration:none; color: inherit;">
+              <img src="${imageUrl}" alt="${product.name || 'Product'}" />
+              <h4>${product.name || 'Unknown Product'}</h4>
+              <p style="color:#e53935;">${product.price ? `ETB ${product.price.toLocaleString()}` : 'Price not available'}</p>
+            </a>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      function addToCartHandler() {
+        const productId = this.dataset.id;
+        if (!productId) return;
+        
+        alert('Product ' + productId + ' added to cart (demo)');
+        
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+
+      function showLoading(message) {
+        elements.title.textContent = message;
+        elements.addToCart.disabled = true;
+      }
+
+      function showError(message) {
+        elements.error.textContent = message;
+        elements.error.style.display = 'block';
+        elements.title.textContent = 'Error loading product';
+        elements.addToCart.disabled = true;
+      }
+    });
+  </script>
+</body>
+</html>
