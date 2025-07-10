@@ -80,6 +80,7 @@
     .navbar-logo {
       display: flex;
       align-items: center;
+  
       color: white;
       text-decoration: none;
     }
@@ -241,7 +242,6 @@
       }
     }
 
-    /* Product Gallery */
     .product-gallery {
       display: flex;
       flex-direction: column;
@@ -647,7 +647,7 @@
       </div>
       
       <div class="nav-action cart-action">
-        <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+        <i class="fas fa-shopping-cart" style="font-size: 1.5rem;" ></i>
         <span class="nav-action-line2">Cart <span class="cart-count">0</span></span>
       </div>
 
@@ -862,11 +862,8 @@
             elements.loading.style.display = 'none';
             elements.productDetail.style.display = 'block';
             
-            if (currentProduct.category && currentProduct.brand) {
-              fetchRelatedProductsByCategoryAndBrand(
-                currentProduct.category.name, 
-                currentProduct.brand.name
-              );
+            if (currentProduct.category) {
+              fetchRelatedProductsByCategory(currentProduct.category.name);
             } else {
               elements.relatedGrid.innerHTML = '<p>No related products available.</p>';
             }
@@ -958,12 +955,12 @@
         elements.compareBtn.addEventListener('click', addToCompare);
       }
 
-      async function fetchRelatedProductsByCategoryAndBrand(category, brand) {
+      async function fetchRelatedProductsByCategory(category) {
         try {
           elements.relatedGrid.innerHTML = '<div class="loading">Loading related products...</div>';
           
           const response = await fetch(
-            `${baseUrl}/by/category-and-brand?category=${encodeURIComponent(category)}&brand=${encodeURIComponent(brand)}`
+            `${baseUrl}/at/category/${encodeURIComponent(category)}`
           );
           
           if (!response.ok) {
@@ -978,7 +975,7 @@
             );
             displayRelatedProducts(relatedProducts);
           } else {
-            elements.relatedGrid.innerHTML = '<p>No related products found for this category and brand.</p>';
+            elements.relatedGrid.innerHTML = '<p>No related products found for this category.</p>';
           }
         } catch (error) {
           console.error('Error loading related products:', error);
@@ -988,7 +985,7 @@
 
       function displayRelatedProducts(products) {
         if (!products || products.length === 0) {
-          elements.relatedGrid.innerHTML = '<p>No other products in this category and brand.</p>';
+          elements.relatedGrid.innerHTML = '<p>No other products in this category.</p>';
           return;
         }
 
@@ -1020,17 +1017,18 @@
         
         const quantity = parseInt(elements.quantity.value) || 1;
         
-        // In a real app, you would add to cart via API
+        if (quantity < 1 || quantity > 10) {
+          alert('Please select a quantity between 1 and 10.');
+          return;
+        }
         alert(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart (demo)`);
         
-        // Demo: Update cart count in localStorage
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         for (let i = 0; i < quantity; i++) {
           cart.push(productId);
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Visual feedback
+     
         const originalText = this.innerHTML;
         this.innerHTML = '<i class="fas fa-check"></i> Added to Cart';
         this.style.backgroundColor = 'var(--success)';
