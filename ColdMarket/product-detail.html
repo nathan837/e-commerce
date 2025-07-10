@@ -3,65 +3,518 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Product Details</title>
+  <title>Product Details | ColdMarket</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #1d7ca8;
+      --secondary: #232F3E;
+      --background: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --text-primary: #0F1111;
+      --text-secondary: #565959;
+      --border: #DDDDDD;
+      --success: #067D62;
+      --danger: #bd2600;
+      --warning: #FFA41C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text-primary);
       line-height: 1.6;
     }
-    img {
-      max-width: 50%;
-      height: auto;
-    }
+
     .container {
-      max-width: 800px;
-      
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 20px;
     }
-    .product-info {
+
+    /* Product Detail Section */
+    .product-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
       margin-top: 20px;
     }
-    .product-info h1 {
-      margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+      .product-detail {
+        grid-template-columns: 1fr;
+      }
     }
-    .related-products {
-      margin-top: 30px;
+
+    /* Product Gallery */
+    .product-gallery {
+      display: flex;
+      flex-direction: column;
     }
-    .related-header {
+
+    .main-image-container {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
       margin-bottom: 15px;
-      font-size: 1.5em;
-      color: #333;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
+
+    .main-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .thumbnail-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .thumbnail {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      padding: 5px;
+    }
+
+    .thumbnail img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+
+    .thumbnail.active {
+      border-color: var(--primary);
+    }
+
+    /* Product Info */
+    .product-info {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .product-title {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .product-brand {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+    }
+
+    .product-brand span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .stars {
+      color: #FFA41C;
+      margin-right: 8px;
+    }
+
+    .rating-count {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-left: 5px;
+    }
+
+    .rating-count:hover {
+      text-decoration: underline;
+      color: var(--danger);
+    }
+
+    .product-price {
+      margin: 20px 0;
+    }
+
+    .current-price {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--success);
+    }
+
+    .original-price {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      text-decoration: line-through;
+      margin-left: 8px;
+    }
+
+    .discount {
+      color: var(--danger);
+      font-size: 1rem;
+      margin-left: 8px;
+    }
+
+    .price-save {
+      color: var(--success);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .product-availability {
+      color: var(--success);
+      font-size: 1rem;
+      margin: 15px 0;
+    }
+
+    .product-availability i {
+      margin-right: 5px;
+    }
+
+    .product-description {
+      margin: 20px 0;
+      color: var(--text-primary);
+    }
+
+    .product-category {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+    }
+
+    .product-category span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .product-actions {
+      margin: 25px 0;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .quantity-label {
+      margin-right: 15px;
+      font-size: 0.9rem;
+    }
+
+    .quantity-input {
+      width: 60px;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .btn-add-to-cart {
+      background-color: var(--primary);
+      color: var(--secondary);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn-add-to-cart:hover {
+      background-color: #008cff;
+      color: rgb(219, 216, 216);
+    }
+
+    .btn-buy-now {
+      background-color: var(--warning);
+      color: #111;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      font-size: 1rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn-buy-now:hover {
+      background-color: #FF8F00;
+    }
+
+    .wishlist-compare {
+      display: flex;
+      margin-top: 20px;
+    }
+
+    .wishlist-btn, .compare-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .wishlist-btn i, .compare-btn i {
+      margin-right: 5px;
+      font-size: 1rem;
+    }
+
+    .wishlist-btn:hover, .compare-btn:hover {
+      color: var(--primary);
+    }
+
+    /* Related Products */
+    .related-products {
+      margin: 50px 0;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .related-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      border: 1px solid var(--border);
+    }
+
+    .related-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .related-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      padding: 15px;
+      background-color: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .related-card h4 {
+      padding: 10px 15px;
+      font-size: 1rem;
+      height: 50px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .related-card p {
+      padding: 0 15px 15px;
+      font-weight: bold;
+      color: var(--success);
+    }
+
+    /* Loading and Error States */
+    .loading-state {
+      text-align: center;
+      padding: 50px;
+    }
+
+    .spinner {
+      border: 4px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary);
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .error-message {
-      color: red;
+      color: var(--danger);
+      background-color: rgba(189, 38, 0, 0.1);
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+      text-align: center;
       display: none;
     }
-    button {
-      padding: 10px 20px;
-      background-color: #1e88e5;
+
+    .btn-retry {
+      background-color: var(--primary);
       color: white;
       border: none;
-      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 4px;
       margin-top: 15px;
+      cursor: pointer;
     }
-    button:disabled {
-      background-color: #aaa;
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .product-title {
+        font-size: 1.5rem;
+      }
+      
+      .current-price {
+        font-size: 1.5rem;
+      }
+      
+      .original-price {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .thumbnail-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .product-info {
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img id="product-image" src="https://via.placeholder.com/400x300?text=Loading..." alt="Product image" />
-    <div class="product-info">
-      <h1 id="product-title">Loading...</h1>
-      <p><strong>Description: </strong> <span id="product-description"></span></p>
-      <p><strong>Category:</strong> <span id="product-category"></span></p>
-      <p><strong style="color: rgb(19, 19, 19);">Price:</strong> <span style="color: green;" id="product-price"></span></p>
-      <button id="add-to-cart" disabled>Add to Cart</button>
+    <!-- Loading State -->
+    <div id="loading-state" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading product details...</p>
     </div>
-    <div id="error-message" class="error-message"></div>
-    <div id="related-products" class="related-products"></div>
+
+    <!-- Error State -->
+    <div id="error-message" class="error-message" style="display: none;">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p id="error-text"></p>
+      <button class="btn-retry" onclick="window.location.reload()">Try Again</button>
+    </div>
+
+    <!-- Product Detail Section (initially hidden) -->
+    <div id="product-detail" style="display: none;">
+      <div class="product-detail">
+        <!-- Product Gallery -->
+        <div class="product-gallery">
+          <div class="main-image-container">
+            <img id="product-image" src="https://via.placeholder.com/600x600?text=Loading..." alt="Product image" class="main-image" />
+          </div>
+          <div class="thumbnail-container" id="thumbnail-container">
+            <!-- Thumbnails will be added by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <h1 id="product-title" class="product-title">Loading...</h1>
+          <div class="product-brand">Brand: <span id="product-brand"></span></div>
+          
+          <div class="product-rating">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <a href="#reviews" class="rating-count" id="product-rating-count">(0 reviews)</a>
+          </div>
+          
+          <div class="product-price">
+            <span class="current-price" id="product-price">ETB 0</span>
+            <span class="original-price" id="original-price" style="display: none;"></span>
+            <span class="discount" id="discount" style="display: none;"></span>
+            <div class="price-save" id="price-save" style="display: none;"></div>
+          </div>
+          
+          <div class="product-availability" id="product-availability">
+            <i class="fas fa-check-circle"></i> Checking availability...
+          </div>
+          
+          <div class="product-description">
+            <p><strong>Description:</strong> <span id="product-description"></span></p>
+          </div>
+          
+          <div class="product-category">
+            <strong>Category:</strong> <span id="product-category"></span>
+          </div>
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <span class="quantity-label">Quantity:</span>
+              <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+            </div>
+            
+            <button class="btn-add-to-cart" id="add-to-cart" disabled>
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+            
+            <button class="btn-buy-now" id="buy-now" disabled>
+              <i class="fas fa-bolt"></i> Buy Now
+            </button>
+            
+            <div class="wishlist-compare">
+              <button class="wishlist-btn" id="wishlist-btn">
+                <i class="far fa-heart"></i> Add to Wishlist
+              </button>
+              <button class="compare-btn" id="compare-btn">
+                <i class="fas fa-exchange-alt"></i> Compare
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <div class="related-products">
+        <h2 class="section-title">You may also like</h2>
+        <div class="related-grid" id="related-grid">
+          <!-- Related products will be added by JavaScript -->
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -75,30 +528,51 @@
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
 
+      // DOM Elements
+      const elements = {
+        loading: document.getElementById('loading-state'),
+        error: document.getElementById('error-message'),
+        errorText: document.getElementById('error-text'),
+        productDetail: document.getElementById('product-detail'),
+        
+        // Product elements
+        image: document.getElementById('product-image'),
+        title: document.getElementById('product-title'),
+        brand: document.getElementById('product-brand'),
+        description: document.getElementById('product-description'),
+        category: document.getElementById('product-category'),
+        price: document.getElementById('product-price'),
+        originalPrice: document.getElementById('original-price'),
+        discount: document.getElementById('discount'),
+        priceSave: document.getElementById('price-save'),
+        availability: document.getElementById('product-availability'),
+        ratingCount: document.getElementById('product-rating-count'),
+        thumbnailContainer: document.getElementById('thumbnail-container'),
+        
+        // Action elements
+        quantity: document.getElementById('quantity'),
+        addToCart: document.getElementById('add-to-cart'),
+        buyNow: document.getElementById('buy-now'),
+        wishlistBtn: document.getElementById('wishlist-btn'),
+        compareBtn: document.getElementById('compare-btn'),
+        
+        // Related products
+        relatedGrid: document.getElementById('related-grid')
+      };
+
+      let currentProduct = null;
+
       if (!productId) {
         showError('No product ID provided in URL');
         window.location.href = 'products.html';
         return;
       }
 
-      const elements = {
-        image: document.getElementById('product-image'),
-        title: document.getElementById('product-title'),
-        description: document.getElementById('product-description'),
-        category: document.getElementById('product-category'),
-        price: document.getElementById('product-price'),
-        addToCart: document.getElementById('add-to-cart'),
-        related: document.getElementById('related-products'),
-        error: document.getElementById('error-message')
-      };
-
-      let currentProduct = null;
-
       fetchProduct();
 
       async function fetchProduct() {
         try {
-          showLoading('Loading product details...');
+          showLoading();
           
           const response = await fetch(`${baseUrl}/product/id/${productId}`);
           
@@ -112,13 +586,18 @@
           if (result.message === 'SUCCESS') {
             currentProduct = result.data;
             displayProduct(currentProduct);
+            
+            // Hide loading, show product
+            elements.loading.style.display = 'none';
+            elements.productDetail.style.display = 'block';
+            
             if (currentProduct.category && currentProduct.brand) {
               fetchRelatedProductsByCategoryAndBrand(
                 currentProduct.category.name, 
                 currentProduct.brand.name
               );
             } else {
-              elements.related.innerHTML = '<p>No related products available.</p>';
+              elements.relatedGrid.innerHTML = '<p>No related products available.</p>';
             }
           } else {
             throw new Error('Unexpected API response structure');
@@ -130,24 +609,87 @@
       }
 
       function displayProduct(product) {
+        // Main image
         const imageId = product.image && product.image[0] ? product.image[0].id : null;
         elements.image.src = imageId
           ? `${baseUrl.replace('/products', '')}/images/image/download/${imageId}`
-          : 'https://via.placeholder.com/400x300?text=No+Image';
+          : 'https://via.placeholder.com/600x600?text=No+Image';
         elements.image.alt = product.name || 'Product Image';
 
+        // Thumbnails
+        elements.thumbnailContainer.innerHTML = '';
+        if (product.image && product.image.length > 0) {
+          product.image.forEach((img, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'thumbnail' + (index === 0 ? ' active' : '');
+            thumbnail.innerHTML = `
+              <img src="${baseUrl.replace('/products', '')}/images/image/download/${img.id}" 
+                   alt="Thumbnail ${index + 1}" 
+                   onclick="changeImage(this, '${baseUrl.replace('/products', '')}/images/image/download/${img.id}')">
+            `;
+            elements.thumbnailContainer.appendChild(thumbnail);
+          });
+        } else {
+          // Add placeholder if no images
+          const thumbnail = document.createElement('div');
+          thumbnail.className = 'thumbnail active';
+          thumbnail.innerHTML = `
+            <img src="https://via.placeholder.com/150x150?text=No+Image" 
+                 alt="No Image" 
+                 onclick="changeImage(this, 'https://via.placeholder.com/600x600?text=No+Image')">
+          `;
+          elements.thumbnailContainer.appendChild(thumbnail);
+        }
+
+        // Product info
         elements.title.textContent = product.name || 'Unknown Product';
+        elements.brand.textContent = product.brand ? product.brand.name : 'Unknown Brand';
         elements.description.textContent = product.description || 'No description available';
         elements.category.textContent = product.category ? product.category.name : 'Uncategorized';
-        elements.price.textContent = product.price ? `ETB ${product.price.toLocaleString()}` : 'Price not available';
+        
+        // Price
+        if (product.price) {
+          elements.price.textContent = `ETB ${product.price.toLocaleString()}`;
+          
+          // If there's a discount (example logic)
+          const originalPrice = product.price * 1.1; // 10% higher for demo
+          if (originalPrice > product.price) {
+            elements.originalPrice.style.display = 'inline';
+            elements.discount.style.display = 'inline';
+            elements.priceSave.style.display = 'block';
+            
+            elements.originalPrice.textContent = `ETB ${originalPrice.toLocaleString()}`;
+            const discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
+            elements.discount.textContent = `(${discountPercent}% off)`;
+            elements.priceSave.textContent = `Save ETB ${(originalPrice - product.price).toLocaleString()}`;
+          }
+        } else {
+          elements.price.textContent = 'Price not available';
+        }
+        
+        // Availability
+        elements.availability.innerHTML = '<i class="fas fa-check-circle"></i> In Stock';
+        
+        // Rating (demo - would come from API in real app)
+        const ratingCount = Math.floor(Math.random() * 1000);
+        elements.ratingCount.textContent = `(${ratingCount} reviews)`;
+        
+        // Enable buttons
         elements.addToCart.disabled = false;
+        elements.buyNow.disabled = false;
         elements.addToCart.dataset.id = product.id;
+        elements.buyNow.dataset.id = product.id;
+        
+        // Add event listeners
         elements.addToCart.addEventListener('click', addToCartHandler);
+        elements.buyNow.addEventListener('click', buyNowHandler);
+        elements.wishlistBtn.addEventListener('click', toggleWishlist);
+        elements.compareBtn.addEventListener('click', addToCompare);
       }
 
       async function fetchRelatedProductsByCategoryAndBrand(category, brand) {
         try {
-          elements.related.innerHTML = '<div class="loading">Loading related products...</div>';
+          elements.relatedGrid.innerHTML = '<div class="loading">Loading related products...</div>';
           
           const response = await fetch(
             `${baseUrl}/by/category-and-brand?category=${encodeURIComponent(category)}&brand=${encodeURIComponent(brand)}`
@@ -165,31 +707,22 @@
             );
             displayRelatedProducts(relatedProducts);
           } else {
-            elements.related.innerHTML = '<p>No related products found for this category and brand.</p>';
+            elements.relatedGrid.innerHTML = '<p>No related products found for this category and brand.</p>';
           }
         } catch (error) {
           console.error('Error loading related products:', error);
-          elements.related.innerHTML = '<p class="error-message">Failed to load related products.</p>';
+          elements.relatedGrid.innerHTML = '<p class="error-message">Failed to load related products.</p>';
         }
       }
 
       function displayRelatedProducts(products) {
         if (!products || products.length === 0) {
-          elements.related.innerHTML = '<p>No other products in this category and brand.</p>';
+          elements.relatedGrid.innerHTML = '<p>No other products in this category and brand.</p>';
           return;
         }
 
-        elements.related.innerHTML = `
-          <h3 class="related-header">More ${currentProduct.category.name} from ${currentProduct.brand.name}</h3>
-          <div class="related-products-grid"></div>
-        `;
+        elements.relatedGrid.innerHTML = '';
         
-        const grid = elements.related.querySelector('.related-products-grid');
-        grid.style.display = 'grid';
-        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-        grid.style.gap = '15px';
-        grid.style.marginTop = '10px';
-
         products.forEach(function(product) {
           const card = document.createElement('div');
           card.className = 'related-card';
@@ -197,16 +730,16 @@
           const imageId = product.image && product.image[0] ? product.image[0].id : null;
           const imageUrl = imageId
             ? `${baseUrl.replace('/products', '')}/images/image/download/${imageId}`
-            : 'https://via.placeholder.com/200x150?text=No+Image';
+            : 'https://via.placeholder.com/250x200?text=No+Image';
 
           card.innerHTML = `
             <a href="product-detail.html?id=${product.id}" style="text-decoration:none; color: inherit;">
               <img src="${imageUrl}" alt="${product.name || 'Product'}" />
               <h4>${product.name || 'Unknown Product'}</h4>
-              <p style="color:#e53935;">${product.price ? `ETB ${product.price.toLocaleString()}` : 'Price not available'}</p>
+              <p>${product.price ? `ETB ${product.price.toLocaleString()}` : 'Price not available'}</p>
             </a>
           `;
-          grid.appendChild(card);
+          elements.relatedGrid.appendChild(card);
         });
       }
 
@@ -214,24 +747,82 @@
         const productId = this.dataset.id;
         if (!productId) return;
         
-        alert('Product ' + productId + ' added to cart (demo)');
+        const quantity = parseInt(elements.quantity.value) || 1;
         
+        // In a real app, you would add to cart via API
+        alert(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart (demo)`);
+        
+        // Demo: Update cart count in localStorage
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart.push(productId);
+        for (let i = 0; i < quantity; i++) {
+          cart.push(productId);
+        }
         localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Visual feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check"></i> Added to Cart';
+        this.style.backgroundColor = 'var(--success)';
+        
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.style.backgroundColor = 'var(--primary)';
+        }, 2000);
       }
 
-      function showLoading(message) {
-        elements.title.textContent = message;
-        elements.addToCart.disabled = true;
+      function buyNowHandler() {
+        const productId = this.dataset.id;
+        if (!productId) return;
+        
+        const quantity = parseInt(elements.quantity.value) || 1;
+        alert(`Buy now: ${quantity} ${quantity > 1 ? 'items' : 'item'} (demo)`);
+        // In a real app, you would redirect to checkout
+      }
+
+      function toggleWishlist() {
+        const icon = this.querySelector('i');
+        if (icon.classList.contains('far')) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+          icon.style.color = 'var(--danger)';
+          alert('Added to wishlist (demo)');
+        } else {
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+          icon.style.color = '';
+          alert('Removed from wishlist (demo)');
+        }
+      }
+
+      function addToCompare() {
+        alert('Added to compare (demo)');
+        // In a real app, you would add to a comparison list
+      }
+
+      function showLoading() {
+        elements.loading.style.display = 'block';
+        elements.error.style.display = 'none';
+        elements.productDetail.style.display = 'none';
       }
 
       function showError(message) {
-        elements.error.textContent = message;
+        elements.loading.style.display = 'none';
         elements.error.style.display = 'block';
-        elements.title.textContent = 'Error loading product';
-        elements.addToCart.disabled = true;
+        elements.errorText.textContent = message;
+        elements.productDetail.style.display = 'none';
       }
+
+      // Global function for image change
+      window.changeImage = function(thumbnailElement, imageUrl) {
+        // Update main image
+        elements.image.src = imageUrl;
+        
+        // Update active thumbnail
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+          thumb.classList.remove('active');
+        });
+        thumbnailElement.parentElement.classList.add('active');
+      };
     });
   </script>
 </body>
