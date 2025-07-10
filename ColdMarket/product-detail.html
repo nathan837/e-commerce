@@ -7,22 +7,55 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #1d7ca8;
-      --secondary: #232F3E;
-      --background: #FFFFFF;
-      --card-bg: #FFFFFF;
-      --text-primary: #0F1111;
-      --text-secondary: #565959;
-      --border: #DDDDDD;
-      --success: #067D62;
-      --danger: #bd2600;
+      --primary-light: #1d7ca8;
+      --secondary-light: #232F3E;
+      --background-light: #FFFFFF;
+      --card-bg-light: #FFFFFF;
+      --text-primary-light: #0F1111;
+      --text-secondary-light: #565959;
+      --border-light: #DDDDDD;
+      --success-light: #067D62;
+      --danger-light: #bd2600;
+      
+      --primary-dark: #00c0ce;
+      --secondary-dark: #131921;
+      --background-dark: #121212;
+      --card-bg-dark: #1E1E1E;
+      --text-primary-dark: #E0E0E0;
+      --text-secondary-dark: #A0A0A0;
+      --border-dark: #333333;
+      --success-dark: #00C896; 
+      --danger-dark: #ff3e3e;
+      
+      --primary: var(--primary-light);
+      --secondary: var(--secondary-light);
+      --background: var(--background-light);
+      --card-bg: var(--card-bg-light);
+      --text-primary: var(--text-primary-light);
+      --text-secondary: var(--text-secondary-light);
+      --border: var(--border-light);
+      --success: var(--success-light);
+      --danger: var(--danger-light);
       --warning: #FFA41C;
+    }
+
+    [data-theme="dark"] {
+      --primary: var(--primary-dark);
+      --secondary: var(--secondary-dark);
+      --background: var(--background-dark);
+      --card-bg: var(--card-bg-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --border: var(--border-dark);
+      --success: var(--success-dark);
+      --danger: var(--danger-dark);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     body {
@@ -32,12 +65,168 @@
       line-height: 1.6;
     }
 
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--secondary);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-bar {
+      display: flex;
+      flex-grow: 1;
+      margin: 0 20px;
+      max-width: 800px;
+    }
+
+    .search-select {
+      background-color: var(--background);
+      border: 1px solid rgb(0, 238, 255);
+      border-radius: 4px 0 0 4px;
+      padding: 0 10px;
+      border-right: none;
+      color: var(--text-primary);
+    }
+
+    .search-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid rgb(0, 238, 255);
+      font-size: 1rem;
+      background-color: var(--background);
+      color: var(--text-primary);
+    }
+
+    .search-button {
+      background-color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: 0 4px 4px 0;
+      padding: 0 15px;
+      cursor: pointer;
+    }
+
+    .search-button i {
+      color: var(--secondary);
+      font-size: 1.2rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      color: white;
+    }
+
+    .nav-action {
+      display: flex;
+      flex-direction: column;
+      padding: 0 15px;
+      cursor: pointer;
+    }
+
+    .nav-action-line1 {
+      font-size: 0.75rem;
+    }
+
+    .nav-action-line2 {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .cart-action {
+      display: flex;
+      align-items: flex-end;
+      padding-left: 15px;
+    }
+
+    .cart-count {
+      color: var(--primary);
+      font-weight: bold;
+      margin-left: 2px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.7rem;
+      cursor: pointer;
+      margin-left: 40px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      background-color: var(--secondary);
+      padding: 10px 20px;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    .breadcrumb a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+      color: var(--primary);
+    }
+
+    /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
     }
 
+    /* Responsive Navbar */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px;
+      }
+      
+      .search-bar {
+        order: 3;
+        margin: 10px 0;
+        width: 100%;
+      }
+      
+      .nav-actions {
+        margin-left: auto;
+      }
+      
+      .nav-action {
+        padding: 0 8px;
+      }
+      
+      .nav-action-line1 {
+        display: none;
+      }
+    }
+
+    /* Rest of your existing product detail styles... */
     /* Product Detail Section */
     .product-detail {
       display: grid;
@@ -419,6 +608,60 @@
   </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="navbar-logo">
+      <i class="fas fa-snowflake logo-icon"></i>
+      <span class="logo-text">ColdMarket</span>
+    </a>
+    
+    <div class="search-bar">
+      <select class="search-select">
+        <option>All Categories</option>
+        <option>Electronics</option>
+        <option>phone</option>
+        <option>computers</option>
+        <option>tablets</option>
+        <option>camera</option>
+        <option>accessories</option>
+        <option>Fashion</option>
+        <option>Sport</option>
+        <option>Furniture</option>
+        <option>House</option>
+      </select>
+      <input type="text" class="search-input" placeholder="Search for products...">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    
+    <div class="nav-actions">
+      <div class="nav-action">
+        <span class="nav-action-line1">Hello, Sign in</span>
+        <span class="nav-action-line2">Account & Lists</span>
+      </div>
+      
+      <div class="nav-action">
+        <span class="nav-action-line1">Returns</span>
+        <span class="nav-action-line2">& Orders</span>
+      </div>
+      
+      <div class="nav-action cart-action">
+        <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+        <span class="nav-action-line2">Cart <span class="cart-count">0</span></span>
+      </div>
+
+      <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Home</a> &gt; <a href="#">Products</a> &gt; <span>Product Details</span>
+  </div>
+
   <div class="container">
     <!-- Loading State -->
     <div id="loading-state" class="loading-state">
@@ -519,6 +762,33 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Theme toggle functionality
+      const themeToggle = document.getElementById('themeToggle');
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      // Check for saved theme preference or use system preference
+      const currentTheme = localStorage.getItem('theme') || 
+                          (prefersDarkScheme.matches ? 'dark' : 'light');
+      
+      if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+      
+      themeToggle.addEventListener('click', function() {
+        let theme;
+        if (document.documentElement.getAttribute('data-theme') === 'dark') {
+          document.documentElement.removeAttribute('data-theme');
+          theme = 'light';
+          themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          theme = 'dark';
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        localStorage.setItem('theme', theme);
+      });
+
       const isLocalhost = window.location.hostname === 'localhost' || 
                           window.location.hostname === '127.0.0.1';
       const baseUrl = isLocalhost 
