@@ -595,6 +595,57 @@
         font-size: 1rem;
       }
     }
+    footer {
+            background-color: var(--secondary);
+            width: 137%;
+            color: white;
+            padding: 30px 0;
+            margin-left: -16rem;
+            margin-bottom: -100px;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #DDDDDD;
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            text-decoration: underline;
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            color: #AAAAAA;
+        }
 
     @media (max-width: 480px) {
       .thumbnail-container {
@@ -653,7 +704,7 @@
 
       <div class="nav-action cart-action">
         <i class="fas fa-heart" style="font-size: 1.5rem; color: rgb(236, 66, 66);"></i>
-        <span class="nav-action-line2">Fav <span class="cart-count">0</span></span>
+        <span class="nav-action-line2">wishlist<span class="cart-count">0</span></span>
       </div>
 
 
@@ -759,6 +810,63 @@
         </div>
       </div>
     </div>
+    <footer>
+      <div class="footer-content">
+          <div class="footer-column">
+              <h3>Get to Know Us</h3>
+              <ul>
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Careers</a></li>
+                  <li><a href="#">Press Releases</a></li>
+                  <li><a href="#">ColdMarket Science</a></li>
+              </ul>
+          </div>
+          
+          <div class="footer-column">
+              <h3>Make Money with Us</h3>
+              <ul>
+                  <li><a href="#">Sell products</a></li>
+                  <li><a href="#">Sell apps</a></li>
+                  <li><a href="#">Become an Affiliate</a></li>
+                  <li><a href="#">Advertise Your Products</a></li>
+              </ul>
+          </div>
+          
+          <div class="footer-column">
+              <h3>Payment Products</h3>
+              <ul>
+                  <li><a href="#">ColdMarket Business Card</a></li>
+                  <li><a href="#">Shop with Points</a></li>
+                  <li><a href="#">Reload Your Balance</a></li>
+                  <li><a href="#">Currency Converter</a></li>
+              </ul>
+          </div>
+          
+          <div class="footer-column">
+              <h3>Let Us Help You</h3>
+              <ul>
+                  <li><a href="#">Your Account</a></li>
+                  <li><a href="#">Your Orders</a></li>
+                  <li><a href="#">Shipping Rates & Policies</a></li>
+                  <li><a href="#">Returns & Replacements</a></li>
+                  <li><a href="#">Help</a></li>
+              </ul>
+          </div>
+      </div>
+      
+      <div class="footer-bottom">
+          <div class="footer-logo">
+              <i class="fas fa-snowflake"></i> ColdMarket
+          </div>
+          <div class="footer-copyright">
+              &copy; 2025 ColdMarket.com, Inc. or its affiliates <br>
+
+                 <center class="DEVS"> Developed By <a href="#"><span>TEENTEAM SOLUTIONS</span></a></center>
+                <center class="footer-copyright"> All rights are reserved</center>
+             
+          </div>
+      </div>
+  </footer>
   </div>
 
   <script>
