@@ -10,8 +10,6 @@ import com.nathdev.e_commerce.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
  
-
-
 @Service
 @RequiredArgsConstructor
 public class ShopUserDetailService implements UserDetailsService {
