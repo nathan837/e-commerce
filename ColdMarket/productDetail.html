@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | ColdMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-light: #1d7ca8;
+            --secondary-light: #232F3E;
+            --background-light: #FFFFFF;
+            --card-bg-light: #FFFFFF;
+            --text-primary-light: #0F1111;
+            --text-secondary-light: #565959;
+            --border-light: #DDDDDD;
+            --success-light: #067D62;
+            --danger-light: #bd2600;
+            
+            --primary-dark: #00c0ce;
+            --secondary-dark: #131921;
+            --background-dark: #121212;
+            --card-bg-dark: #1E1E1E;
+            --text-primary-dark: #E0E0E0;
+            --text-secondary-dark: #A0A0A0;
+            --border-dark: #333333;
+            --success-dark: #00C896;
+            --danger-dark: #ff3e3e;
+            
+            --primary: var(--primary-light);
+            --secondary: var(--secondary-light);
+            --background: var(--background-light);
+            --card-bg: var(--card-bg-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --border: var(--border-light);
+            --success: var(--success-light);
+            --danger: var(--danger-light);
+        }
+
+        [data-theme="dark"] {
+            --primary: var(--primary-dark);
+            --secondary: var(--secondary-dark);
+            --background: var(--background-dark);
+            --card-bg: var(--card-bg-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --border: var(--border-dark);
+            --success: var(--success-dark);
+            --danger: var(--danger-dark);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar - Same as your existing page */
+        .navbar {
+            background-color: var(--secondary);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            display: flex;
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 800px;
+        }
+
+        .search-select {
+            background-color: var(--background);
+            border: 1px solid rgb(0, 238, 255);
+            border-radius: 4px 0 0 4px;
+            padding: 0 10px;
+            border-right: none;
+            color: var(--text-primary);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid rgb(0, 238, 255);
+            font-size: 1rem;
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+
+        .search-button {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 0 4px 4px 0;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+
+        .search-button i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            color: white;
+        }
+
+        .nav-action {
+            display: flex;
+            flex-direction: column;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+
+        .nav-action-line1 {
+            font-size: 0.75rem;
+        }
+
+        .nav-action-line2 {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .cart-action {
+            display: flex;
+            align-items: flex-end;
+            padding-left: 15px;
+        }
+
+        .cart-count {
+            color: var(--primary);
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.7rem;
+            cursor: pointer;
+            margin-left: 40px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: var(--secondary);
+            padding: 10px 20px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            color: var(--primary);
+        }
+
+        /* Product Details Container */
+        .product-details-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Product Main Section */
+        .product-main {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-gallery {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .main-image-container {
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px;
+            background-color: white;
+        }
+
+        .thumbnail:hover {
+            border-color: var(--primary);
+        }
+
+        .product-info {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .product-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .product-brand {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .rating-stars {
+            color: #FFA41C;
+            margin-right: 8px;
+        }
+
+        .rating-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        .product-price {
+            margin: 20px 0;
+        }
+
+        .current-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--danger);
+        }
+
+        .original-price {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .discount {
+            font-size: 1rem;
+            color: var(--success);
+            margin-left: 10px;
+        }
+
+        .product-availability {
+            color: var(--success);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            margin: 25px 0;
+            line-height: 1.6;
+        }
+
+        .product-specs {
+            margin: 25px 0;
+        }
+
+        .spec-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .spec-label {
+            font-weight: bold;
+            min-width: 150px;
+            color: var(--text-secondary);
+        }
+
+        .spec-value {
+            flex: 1;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-add-to-cart {
+            flex: 1;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #008cff;
+            color: rgb(219, 216, 216);
+        }
+
+        .btn-buy-now {
+            flex: 1;
+            background-color: #FFA41C;
+            color: #111;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-buy-now:hover {
+            background-color: #FF8F00;
+        }
+
+        .btn-wishlist {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 50px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .btn-wishlist:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Related Products Section */
+        .related-products {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            color: var(--text-primary);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .related-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(184, 184, 184, 0.1);
+        }
+
+        .related-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background-color: white;
+        }
+
+        .related-info {
+            padding: 15px;
+        }
+
+        .related-title {
+            font-size: 1rem;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .related-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        /* Footer - Same as your existing page */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #DDDDDD;
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            text-decoration: underline;
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            color: #AAAAAA;
+        }
+
+        .DEVS a {
+            color: #c7c7c7;
+            text-decoration: none;
+        }
+        .DEVS a span:hover {
+            text-decoration: underline;
+            color: white;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .product-main {
+                flex-direction: column;
+            }
+            
+            .product-gallery {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 10px;
+            }
+            
+            .search-bar {
+                order: 3;
+                margin: 10px 0;
+                width: 100%;
+            }
+            
+            .nav-actions {
+                margin-left: auto;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-title {
+                font-size: 1.4rem;
+            }
+            
+            .current-price {
+                font-size: 1.4rem;
+            }
+            
+            .original-price {
+                font-size: 1rem;
+            }
+            
+            .spec-item {
+                flex-direction: column;
+            }
+            
+            .spec-label {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation - Same as your existing page -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo">
+            <i class="fas fa-snowflake logo-icon"></i>
+            <span class="logo-text">ColdMarket</span>
+        </a>
+        
+        <div class="search-bar">
+            <select class="search-select">
+                <option>All Categories</option>
+                <option>Electronics</option>
+                <option>phone</option>
+                <option>computers</option>
+                <option>tablets</option>
+                <option>camera</option>
+                <option>accessories</option>
+                <option>Fashion</option>
+                <option>Sport</option>
+                <option>Furniture</option>
+                <option>House</option>
+            </select>
+            <input type="text" class="search-input" placeholder="Search for products...">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
+        <div class="nav-actions">
+            <div class="nav-action">
+                <span class="nav-action-line1">Hello, Sign in</span>
+                <span class="nav-action-line2">Account & Lists</span>
+            </div>
+            
+            <div class="nav-action">
+                <span class="nav-action-line1">Returns</span>
+                <span class="nav-action-line2">& Orders</span>
+            </div>
+            
+            <div class="nav-action cart-action">
+                <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+                <span class="nav-action-line2">Cart <span class="cart-count">0</span></span>
+            </div>
+
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> &gt; 
+        <a href="products.html">All Products</a> &gt; 
+        <span>Product Details</span>
+    </div>
+
+    <!-- Product Details Container -->
+    <div class="product-details-container">
+        <div id="loading-spinner" class="spinner"></div>
+        
+        <div id="product-content" style="display: none;">
+            <!-- Product Main Section -->
+            <div class="product-main">
+                <div class="product-gallery">
+                    <div class="main-image-container">
+                        <img id="main-image" src="" alt="Product Image" class="main-image">
+                    </div>
+                    <div class="thumbnail-container" id="thumbnail-container">
+                        <!-- Thumbnails will be added by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="product-info">
+                    <h1 class="product-title" id="product-title">Loading...</h1>
+                    <div class="product-brand" id="product-brand">Brand: <span id="brand-name">Loading...</span></div>
+                    
+                    <div class="product-rating">
+                        <div class="rating-stars" id="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="rating-count" id="rating-count">(0 reviews)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price" id="current-price">ETB. 0.00</span>
+                        <span class="original-price" id="original-price">ETB. 0.00</span>
+                        <span class="discount" id="discount">0% off</span>
+                    </div>
+                    
+                    <div class="product-availability" id="product-availability">
+                        <i class="fas fa-check-circle"></i> In Stock
+                    </div>
+                    
+                    <div class="product-description" id="product-description">
+                        Loading product description...
+                    </div>
+                    
+                    <div class="product-specs">
+                        <h3>Specifications</h3>
+                        <div class="spec-item">
+                            <span class="spec-label">Category:</span>
+                            <span class="spec-value" id="product-category">Loading...</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Condition:</span>
+                            <span class="spec-value" id="product-condition">New</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Delivery:</span>
+                            <span class="spec-value" id="product-delivery">Free delivery</span>
+                        </div>
+                        <!-- More specs can be added dynamically -->
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" id="add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        <button class="btn-buy-now">
+                            Buy Now
+                        </button>
+                        <button class="btn-wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Related Products Section -->
+            <div class="related-products">
+                <h2 class="section-title">More from this seller</h2>
+                <div class="related-grid" id="related-products-grid">
+                    <!-- Related products will be added by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Same as your existing page -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Get to Know Us</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Releases</a></li>
+                    <li><a href="#">ColdMarket Science</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Make Money with Us</h3>
+                <ul>
+                    <li><a href="#">Sell products</a></li>
+                    <li><a href="#">Sell apps</a></li>
+                    <li><a href="#">Become an Affiliate</a></li>
+                    <li><a href="#">Advertise Your Products</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Payment Products</h3>
+                <ul>
+                    <li><a href="#">ColdMarket Business Card</a></li>
+                    <li><a href="#">Shop with Points</a></li>
+                    <li><a href="#">Reload Your Balance</a></li>
+                    <li><a href="#">Currency Converter</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Let Us Help You</h3>
+                <ul>
+                    <li><a href="#">Your Account</a></li>
+                    <li><a href="#">Your Orders</a></li>
+                    <li><a href="#">Shipping Rates & Policies</a></li>
+                    <li><a href="#">Returns & Replacements</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-logo">
+                <i class="fas fa-snowflake"></i> ColdMarket
+            </div>
+            <div class="footer-copyright">
+                &copy; 2025 ColdMarket.com, Inc. or its affiliates <br>
+                <center class="DEVS">Developed By <a href="#"><span>TEENTEAM SOLUTIONS</span></a></center>
+                <center class="footer-copyright">All rights are reserved</center>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle - Same as your existing page
+            const themeToggle = document.getElementById('themeToggle');
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            const currentTheme = localStorage.getItem('theme') || 
+                                (prefersDarkScheme.matches ? 'dark' : 'light');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                let theme;
+                if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    theme = 'light';
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    theme = 'dark';
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                localStorage.setItem('theme', theme);
+            });
+
+            // Get product ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                // Redirect if no product ID is provided
+                window.location.href = 'products.html';
+                return;
+            }
+
+            // Fetch product details
+            fetchProductDetails(productId);
+            
+            // Add to cart functionality
+            document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+                addToCart(productId);
+            });
+            
+            // Wishlist button
+            document.querySelector('.btn-wishlist').addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.style.color = 'var(--danger)';
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    icon.style.color = '';
+                }
+            });
+        });
+
+        async function fetchProductDetails(productId) {
+            try {
+                // Fetch the main product details
+                const productResponse = await fetch(`http://localhost:9090/coldMarket/products/${productId}`);
+                
+                if (!productResponse.ok) {
+                    throw new Error(`Server returned ${productResponse.status} status`);
+                }
+
+                const productData = await productResponse.json();
+                
+                if (productData.message === "SUCCESS") {
+                    displayProductDetails(productData.data);
+                    
+                    // Now fetch related products (by the same brand)
+                    fetchRelatedProducts(productData.data.brand, productId);
+                } else {
+                    throw new Error('Unexpected API response format');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showErrorMessage(error);
+            }
+        }
+
+        function displayProductDetails(product) {
+            // Hide spinner and show content
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('product-content').style.display = 'block';
+            
+            // Set basic product info
+            document.getElementById('product-title').textContent = product.name;
+            document.getElementById('brand-name').textContent = product.brand;
+            document.getElementById('product-description').textContent = product.description;
+            document.getElementById('product-category').textContent = product.category.name;
+            
+            // Set price information
+            document.getElementById('current-price').textContent = `ETB. ${product.price.toLocaleString()}`;
+            
+            // For demo purposes, let's create a fake original price (20% higher)
+            const originalPrice = product.price * 1.2;
+            const discountPercent = 20;
+            
+            document.getElementById('original-price').textContent = `ETB. ${originalPrice.toLocaleString()}`;
+            document.getElementById('discount').textContent = `${discountPercent}% off`;
+            
+            // Set product images
+            if (product.image && product.image.length > 0) {
+                const mainImage = document.getElementById('main-image');
+                const thumbnailContainer = document.getElementById('thumbnail-container');
+                
+                // Set main image (first image)
+                const mainImageId = product.image[0].id;
+                mainImage.src = `http://localhost:9090/coldMarket/images/image/download/${mainImageId}`;
+                
+                // Add all images as thumbnails
+                product.image.forEach((img, index) => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = `http://localhost:9090/coldMarket/images/image/download/${img.id}`;
+                    thumbnail.alt = `Thumbnail ${index + 1}`;
+                    thumbnail.className = 'thumbnail';
+                    thumbnail.dataset.imageId = img.id;
+                    
+                    thumbnail.addEventListener('click', function() {
+                        mainImage.src = this.src;
+                    });
+                    
+                    thumbnailContainer.appendChild(thumbnail);
+                });
+            }
+            
+            // Set rating (random for demo)
+            const rating = Math.random() * 2 + 3; // Random rating between 3 and 5
+            const ratingCount = Math.floor(Math.random() * 100) + 1;
+            
+            displayStarRating(rating);
+            document.getElementById('rating-count').textContent = `(${ratingCount} reviews)`;
+        }
+
+        function displayStarRating(rating) {
+            const starsContainer = document.getElementById('rating-stars');
+            starsContainer.innerHTML = '';
+            
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('i');
+                
+                if (i <= fullStars) {
+                    star.className = 'fas fa-star';
+                } else if (i === fullStars + 1 && hasHalfStar) {
+                    star.className = 'fas fa-star-half-alt';
+                } else {
+                    star.className = 'far fa-star';
+                }
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        async function fetchRelatedProducts(brand, excludeProductId) {
+            try {
+                // Fetch all products by the same brand (excluding the current product)
+                const response = await fetch('http://localhost:9090/coldMarket/products/all');
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status} status`);
+                }
+
+                const data = await response.json();
+                
+                if (data.message === "SUCCESS" && Array.isArray(data.data)) {
+                    // Filter products by the same brand and exclude the current product
+                    const relatedProducts = data.data.filter(
+                        product => product.brand === brand && product.id !== excludeProductId
+                    ).slice(0, 4); // Show max 4 related products
+                    
+                    displayRelatedProducts(relatedProducts);
+                } else {
+                    throw new Error('Unexpected API response format');
+                }
+            } catch (error) {
+                console.error('Error fetching related products:', error);
+                // Hide the related products section if there's an error
+                document.querySelector('.related-products').style.display = 'none';
+            }
+        }
+
+        function displayRelatedProducts(products) {
+            const relatedGrid = document.getElementById('related-products-grid');
+            
+            if (!products || products.length === 0) {
+                document.querySelector('.related-products').style.display = 'none';
+                return;
+            }
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'related-card';
+                
+                // Use the first image if available, or placeholder
+                const imageId = product.image && product.image.length > 0 ? product.image[0].id : null;
+                const imageUrl = imageId 
+                    ? `http://localhost:9090/coldMarket/images/image/download/${imageId}`
+                    : 'https://via.placeholder.com/250x200?text=No+Image';
+                
+                productCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${product.name}" class="related-image">
+                    <div class="related-info">
+                        <h3 class="related-title">${product.name}</h3>
+                        <div class="related-price">ETB. ${product.price.toLocaleString()}</div>
+                        <button class="btn-add-to-cart" style="width: 100%; padding: 8px;" data-id="${product.id}">
+                            Add to Cart
+                        </button>
+                    </div>
+                `;
+                
+                relatedGrid.appendChild(productCard);
+            });
+            
+            // Add event listeners to related product "Add to Cart" buttons
+            document.querySelectorAll('#related-products-grid .btn-add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const productId = this.getAttribute('data-id');
+                    addToCart(productId);
+                });
+            });
+        }
+
+        function addToCart(productId) {
+            // In a real app, you would send this to your backend
+            console.log('Adding product to cart:', productId);
+            
+            // Update cart count in UI
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = parseInt(cartCount.textContent) + 1;
+            
+            // Show feedback
+            const button = document.getElementById('add-to-cart-btn');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Added';
+            button.style.backgroundColor = 'var(--success)';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.backgroundColor = 'var(--primary)';
+            }, 2000);
+        }
+
+        function showErrorMessage(error) {
+            document.getElementById('loading-spinner').style.display = 'none';
+            
+            const container = document.querySelector('.product-details-container');
+            container.innerHTML = `
+                <div style="text-align: center; padding: 50px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--danger);"></i>
+                    <h2>Failed to load product details</h2>
+                    <p>${error.message}</p>
+                    <button onclick="window.location.href='products.html'" 
+                            style="margin-top: 20px; padding: 10px 20px; 
+                                   background-color: var(--primary); 
+                                   color: white; border: none; 
+                                   border-radius: 4px; cursor: pointer;">
+                        <i class="fas fa-arrow-left"></i> Back to Products
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
