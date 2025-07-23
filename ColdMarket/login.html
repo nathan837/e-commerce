@@ -263,106 +263,157 @@
     const loginBtn = document.getElementById('loginBtn');
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('password');
-    
+
     // Toggle password visibility
     togglePassword.addEventListener('click', function() {
-      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordField.setAttribute('type', type);
-      this.classList.toggle('fa-eye-slash');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
     });
-    
+
+    // Helper function to decode JWT
+    function decodeJWT(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(atob(base64));
+        } catch (e) {
+            console.error('Error decoding JWT:', e);
+            return null;
+        }
+    }
+
+    // Show message function
+    function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = 'message ' + type;
+        messageDiv.style.display = 'block';
+
+        if (type === 'error') {
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+
     // Form submission
     form.addEventListener('submit', async function(event) {
-      event.preventDefault();
-      
-      // Get form values
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      
-      // Validate inputs
-      if (!email || !password) {
-        showMessage('Please fill in all fields', 'error');
-        return;
-      }
-      
-      // Email validation
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showMessage('Please enter a valid email address', 'error');
-        return;
-      }
-      
-      // Show loading state
-      loginBtn.disabled = true;
-      loadingDiv.style.display = 'block';
-      messageDiv.style.display = 'none';
-      
-      try {
-        const response = await fetch('http://localhost:9090/coldMarket/auth/login', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.message || 'Login failed');
+        event.preventDefault();
+
+        // Get form values
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        // Validate inputs
+        if (!email || !password) {
+            showMessage('Please fill in all fields', 'error');
+            return;
         }
-        
-        console.log('API Response:', data);
-        
-        // Check for token in different possible locations
-        const token = data?.data?.token || data?.data?.jwtToken || data?.token;
-        
-        if (token) {
-          // Store token securely
-          localStorage.setItem('authToken', token);
-          
-          // Show success message
-          showMessage('Login successful! Redirecting...', 'success');
-          
-    
-            setTimeout(() => {
-                window.location.href = '/productsPage.html'; // Change to your dashboard page
-            }, 1500);
-        } else {
-          throw new Error('Authentication token not found in response');
+
+        // Email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showMessage('Please enter a valid email address', 'error');
+            return;
         }
-      } catch (error) {
-        console.error('Login error:', error);
-        showMessage(error.message || 'Login failed. Please try again.', 'error');
-      } finally {
-        // Reset loading state
-        loginBtn.disabled = false;
-        loadingDiv.style.display = 'none';
-      }
+
+        // Show loading state
+        loginBtn.disabled = true;
+        loadingDiv.style.display = 'block';
+        messageDiv.style.display = 'none';
+
+        try {
+            const response = await fetch('http://localhost:9090/coldMarket/auth/login', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+            }
+
+            console.log('API Response:', data);
+
+            // Get token from response
+            const token = data?.data?.token || data?.data?.jwtToken || data?.token;
+
+            if (token) {
+                // Decode the token to get user info
+                const decodedToken = decodeJWT(token);
+
+                if (!decodedToken) {
+                    throw new Error('Invalid token format');
+                }
+
+                // Check if user is admin
+                const isAdmin = decodedToken.roles && decodedToken.roles.includes("ROLE_ADMIN");
+
+                // Store token and user data
+                localStorage.setItem('authToken', token);
+                localStorage.setItem('userData', JSON.stringify({
+                    email: decodedToken.sub,
+                    isAdmin: isAdmin,
+                    userId: decodedToken.id
+                }));
+
+                // Show success message
+                showMessage('Login successful! Redirecting...', 'success');
+
+                // Redirect based on admin status
+                setTimeout(() => {
+                    if (isAdmin) {
+                        window.location.href = '/admin/index.html'; // Admin dashboard
+                    } else {
+                        window.location.href = '/productsPage.html'; // Regular user page
+                    }
+                }, 1500);
+            } else {
+                throw new Error('Authentication token not found in response');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            showMessage(error.message || 'Login failed. Please try again.', 'error');
+        } finally {
+            // Reset loading state
+            loginBtn.disabled = false;
+            loadingDiv.style.display = 'none';
+        }
     });
-    
-    
-    function showMessage(text, type) {
-      messageDiv.textContent = text;
-      messageDiv.className = 'message ' + type;
-      messageDiv.style.display = 'block';
-       
 
-
-      if (type === 'error') {
-        setTimeout(() => {
-          messageDiv.style.display = 'none';
-        }, 5000);
-      }
-    }
-    
+    // Check if user is already logged in
     if (localStorage.getItem('authToken')) {
-      showMessage('You are already logged in. Redirecting...', 'success');
-      setTimeout(() => {
-        window.location.href = '../ColdMarket/productspage.html'; // Change to your dashboard page
-      }, 1500);
+        try {
+            const token = localStorage.getItem('authToken');
+            const decodedToken = decodeJWT(token);
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+            // Verify token is still valid
+            if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
+                showMessage('You are already logged in. Redirecting...', 'success');
+                setTimeout(() => {
+                    if (userData.isAdmin) {
+                        window.location.href = '../ColdMarket/Admin/index.html';
+                    } else {
+                        window.location.href = '../ColdMarket/productspage.html';
+                    }
+                }, 1500);
+            } else {
+                // Token expired, clear storage
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userData');
+            }
+        } catch (e) {
+            console.error('Token validation error:', e);
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userData');
+        }
     }
-  });
+});
 </script>
 
 </body>
