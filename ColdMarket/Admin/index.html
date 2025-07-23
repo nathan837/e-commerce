@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">Admin Panel</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">📊 Dashboard</a></li>
+                    <li><a href="products.html">🛍️ Products</a></li>
+                    <li><a href="users.html">👥 Users</a></li>
+                    <li><a href="#">📦 Orders</a></li>
+                    <li><a href="#">⚙️ Settings</a></li>
+                    <li><a href="#">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span>Admin User</span>
+                    <img src="https://via.placeholder.com/40" alt="Admin Avatar">
+                </div>
+            </header>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Products</h3>
+                    <p class="stat-value">125</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <p class="stat-value">542</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p class="stat-value">89</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Revenue</h3>
+                    <p class="stat-value">$12,345</p>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <span class="activity-time">10 min ago</span>
+                        <p>New order #1234 placed by John Doe</p>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">25 min ago</span>
+                        <p>Product "Wireless Headphones" was updated</p>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">1 hour ago</span>
+                        <p>New user registered: jane@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
