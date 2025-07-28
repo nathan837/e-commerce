@@ -28,7 +28,6 @@ import com.nathdev.e_commerce.service.product.I_ProductService;
 
 import lombok.AllArgsConstructor;
 
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/products")
@@ -89,8 +88,8 @@ public class ProductController {
             
                 if (products.isEmpty()) {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("NO PRODUCT FOUND ", productName));
-                
              }
+             
              List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return ResponseEntity.ok(new ApiResponse("SUCCESS", convertedProducts));
         
@@ -139,7 +138,6 @@ public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                  .body(new ApiResponse("NO PRODUCT FOUND", null));
         }
-
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return ResponseEntity.ok(new ApiResponse("SUCCESS", convertedProducts));
         
@@ -149,7 +147,6 @@ public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand
                              .body(new ApiResponse("Internal Server Error: " + e.getMessage(), null));
     }
 }
-
 
 @GetMapping("/at/category/{category}")
     public ResponseEntity<ApiResponse> findProductByCategory(@PathVariable String category){ 
