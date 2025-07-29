@@ -18,7 +18,7 @@
                     <li><a href="users.html">👥 Users</a></li>
                     <li><a href="#">📦 Orders</a></li>
                     <li><a href="#">⚙️ Settings</a></li>
-                    <li><a href="#">🚪 Logout</a></li>
+                    <li><a href="#" id="logout-btn">🚪 Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -28,44 +28,35 @@
             <header class="header">
                 <h1>Dashboard</h1>
                 <div class="user-info">
-                    <span>Admin User</span>
-                    <img src="https://via.placeholder.com/40" alt="Admin Avatar">
+                    <span id="admin-username">Loading...</span>
+                    <img src="https://via.placeholder.com/40" alt="Admin Avatar" id="admin-avatar">
                 </div>
             </header>
 
             <div class="stats-container">
                 <div class="stat-card">
                     <h3>Total Products</h3>
-                    <p class="stat-value">125</p>
+                    <p class="stat-value" id="total-products">--</p>
                 </div>
                 <div class="stat-card">
                     <h3>Total Users</h3>
-                    <p class="stat-value">542</p>
+                    <p class="stat-value" id="total-users">--</p>
                 </div>
                 <div class="stat-card">
                     <h3>Total Orders</h3>
-                    <p class="stat-value">89</p>
+                    <p class="stat-value" id="total-orders">--</p>
                 </div>
                 <div class="stat-card">
                     <h3>Revenue</h3>
-                    <p class="stat-value">$12,345</p>
+                    <p class="stat-value" id="total-revenue">--</p>
                 </div>
             </div>
 
             <div class="recent-activity">
                 <h2>Recent Activity</h2>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <span class="activity-time">10 min ago</span>
-                        <p>New order #1234 placed by John Doe</p>
-                    </div>
-                    <div class="activity-item">
-                        <span class="activity-time">25 min ago</span>
-                        <p>Product "Wireless Headphones" was updated</p>
-                    </div>
-                    <div class="activity-item">
-                        <span class="activity-time">1 hour ago</span>
-                        <p>New user registered: jane@example.com</p>
+                <div class="activity-list" id="activity-list">
+                    <div class="activity-item loading">
+                        Loading recent activity...
                     </div>
                 </div>
             </div>
