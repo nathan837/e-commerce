@@ -134,5 +134,9 @@ public class ProductService implements I_ProductService {
         productDto.setImage(imageDtos);
         return productDto;
     }
+    @Override
+    public long getProductCount() {
+        return productRepository.count();
+    }
     
 }

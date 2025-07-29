@@ -42,6 +42,12 @@ public class UserController {
     return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
  }
 }
+@GetMapping("/count")
+public ResponseEntity<ApiResponse> getUserCount() {
+    long count = userService.getUserCount();
+    return ResponseEntity.ok(new ApiResponse("SUCCESS", count));
+}
+
   @PostMapping("/add")
  public ResponseEntity<ApiResponse> createUser(@RequestBody CreateUserRequest request){
     try{
