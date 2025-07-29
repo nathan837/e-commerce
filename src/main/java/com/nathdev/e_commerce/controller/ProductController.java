@@ -40,6 +40,12 @@ public class ProductController {
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return ResponseEntity.ok(new ApiResponse("SUCCESS", convertedProducts));
     }
+    @GetMapping("/count")
+    public ResponseEntity<ApiResponse> getProductCount() {
+        long count = productService.getProductCount();
+        return ResponseEntity.ok(new ApiResponse("SUCCESS", count));
+    }
+
 @GetMapping("/product/id/{productId}")
      public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
         try{
