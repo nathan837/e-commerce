@@ -28,14 +28,12 @@ public class UserService implements IUserService{
 
     @Override
     public User getUserById(Long userId) {
-        // TODO Auto-generated method stub
        return userRepository.findById(userId).orElseThrow(() 
        -> new ResourceNotFoundException("User no found"));
     }
 
     @Override
     public User createUser(CreateUserRequest request) {
-        // TODO Auto-generated method stub
         return Optional.of(request).filter(user ->  !userRepository.existsByEmail(request.getEmail()))
         .map(req -> {
             User user = new User();
